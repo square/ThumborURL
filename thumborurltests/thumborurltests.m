@@ -7,7 +7,7 @@
 //
 
 #import "thumborurltests.h"
-#import "TUThumborURL.h"
+#import "ThumborURL.h"
 
 @implementation thumborurltests
 
@@ -35,7 +35,9 @@
     NSString *key = @"omg152";
     
     NSURL *u = [NSURL TU_secureURLWithOptions:opts imageURL:imageURL baseURL:baseURL securityKey:key];
-    NSLog(@"%@", u);
+    NSString *expectedURL = @"/qcQJp6JpxvDT799fxzjPYxt9A0ooZSeV_NOo-nC0-GN5kvKkWcTfpqwLE5PgFouD/http://twitter.com/foo.png";
+    
+    STAssertEqualObjects(expectedURL, u.relativeString, @"Should work");
 }
 
 @end

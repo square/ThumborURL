@@ -241,7 +241,7 @@ static inline NSString *formatRect(CGRect r) {
     NSMutableData *buffer = [[NSMutableData alloc] initWithLength:2048];
 
     CCCryptorRef cryptor = NULL;
-    CCCryptorStatus  status = CCCryptorCreateFromData(kCCEncrypt, kCCAlgorithmAES128, 0, key.bytes,
+    CCCryptorStatus  status = CCCryptorCreateFromData(kCCEncrypt, kCCAlgorithmAES128, kCCOptionECBMode, key.bytes,
                                                       key.length, NULL, buffer.mutableBytes, buffer.length,
                                                       &cryptor, NULL);
 
