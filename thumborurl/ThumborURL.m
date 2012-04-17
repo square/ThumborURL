@@ -263,9 +263,16 @@ static inline NSString *formatSize(CGSize size);
 + (id)TU_secureURLWithOptions:(TUOptions *)options imageURL:(NSURL *)imageURL baseURL:(NSURL *)baseURL securityKey:(NSString *)securityKey;
 {
     assert(securityKey.length > 0);
-    
+
+    // Remove the query from calculating the hash
     NSString *imageURLString = imageURL.absoluteString;
-    
+
+
+    NSString *query = imageURL.query;
+    if (query != nil) {
+        imageURLString = [imageURLString substringToIndex:imageURLString.length - (query.length + 1)];
+    }
+
     // MD5 the imageURLString
     NSData *imageURLStringData = [imageURLString dataUsingEncoding:NSUTF8StringEncoding];
     NSMutableData *imageHash = [[NSMutableData alloc] initWithLength:CC_MD5_DIGEST_LENGTH];
