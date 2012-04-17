@@ -227,8 +227,6 @@ static inline NSString *formatRect(CGRect r) {
     // The URL we want to encrypt is appended by the imageHashString
     NSString *urlToEncrypt = [options.optionsPath stringByAppendingFormat:@"/%@", imageHashString];
 
-    NSLog(@"%@", urlToEncrypt);
-    
     // Pad it to 16 bytes
     size_t paddingNeeded = (16 - [urlToEncrypt lengthOfBytesUsingEncoding:NSUTF8StringEncoding] % 16);
     urlToEncrypt = [urlToEncrypt stringByPaddingToLength:urlToEncrypt.length + paddingNeeded withString:@"{" startingAtIndex:0];
