@@ -10,6 +10,7 @@
 
 
 @class TUFilter;
+@class TUOptions;
 
 
 typedef enum {
@@ -31,7 +32,30 @@ typedef enum {
 } TUHorizontalAlignment;
 
 
+// TUEndpoints represent a thumbor endpoint
+// An endpoint can either have a global key or a key per image
+// If no key is specified, a key per image is required
+@interface TUEndpointConfiguration : NSObject
+
+- (id)initWithBaseURL:(NSURL *)baseURL securityKey:(NSString *)securityKey;
+- (id)initWithBaseURL:(NSURL *)baseURL;
+
+@property (nonatomic, copy) NSURL *baseURL;
+@property (nonatomic, copy) NSString *globalSecurityKey;
+
+// globalSecurityKey must be set
+- (NSURL *)secureURLWithImageURL:(NSURL *)imageURL options:(TUOptions *)options;
+
+// This one can be used with a per-image security key
+- (NSURL *)secureURLWithImageURL:(NSURL *)imageURL options:(TUOptions *)options securityKey:(NSString *)securityKey;
+
+@end
+
+
 @interface TUOptions : NSObject <NSCopying>
+
+// Make a copy of options and assign a new size
+- (TUOptions *)optionsWithSize:(CGSize)newSize;
 
 @property (nonatomic, assign) CGSize targetSize;
 @property (nonatomic, assign) BOOL smart;
@@ -50,9 +74,6 @@ typedef enum {
 @property (nonatomic, copy) NSArray *filters;
 
 @property (nonatomic, assign) CGFloat scale;
-
-- (NSArray *)options;
-- (NSString *)optionsPath;
 
 @end
 

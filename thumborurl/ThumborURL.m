@@ -12,6 +12,53 @@
 #import <CommonCrypto/CommonDigest.h>
 #import <CommonCrypto/CommonCryptor.h>
 
+static inline NSString *formatRect(CGRect r);
+static inline NSString *formatSize(CGSize size);
+
+
+@implementation TUEndpointConfiguration
+
+@synthesize baseURL = _baseURL;
+@synthesize globalSecurityKey = _globalSecurityKey;
+
+- (id)initWithBaseURL:(NSURL *)baseURL securityKey:(NSString *)securityKey;
+{
+    self = [super init];
+    if (!self) {
+        return nil;
+    }
+
+    self.baseURL = baseURL;
+    self.globalSecurityKey = securityKey;
+
+    return self;
+}
+
+- (id)initWithBaseURL:(NSURL *)baseURL;
+{
+    self = [super init];
+    if (!self) {
+        return nil;
+    }
+
+    self.baseURL = baseURL;
+
+    return self;
+}
+
+- (NSURL *)secureURLWithImageURL:(NSURL *)imageURL options:(TUOptions *)options;
+{
+    NSAssert(self.globalSecurityKey, @"globalSecurityKey required for calling %@", NSStringFromSelector( _cmd));
+    return [self secureURLWithImageURL:imageURL options:options securityKey:self.globalSecurityKey];
+}
+
+- (NSURL *)secureURLWithImageURL:(NSURL *)imageURL options:(TUOptions *)options securityKey:(NSString *)securityKey;
+{
+    return [NSURL TU_secureURLWithOptions:options imageURL:imageURL baseURL:self.baseURL securityKey:securityKey];
+}
+
+@end
+
 
 @implementation TUFilter
 
@@ -25,6 +72,7 @@
     f.name = name;
     return f;
 }
+
 + (id)filterWithName:(NSString *)name arguments:(id)firstArg, ...;
 {
     NSMutableArray *argsAry = [[NSMutableArray alloc] init];
@@ -41,6 +89,15 @@
 }
 
 @end
+
+
+@interface TUOptions ()
+
+- (NSArray *)URLOptions;
+- (NSString *)URLOptionsPath;
+
+@end
+
 
 @implementation TUOptions
 
@@ -98,21 +155,7 @@
     return opt;
 }
 
-static inline NSString *formatSize(CGSize size) {
-    return [[NSString alloc] initWithFormat:@"%dx%d", (NSInteger)size.width, (NSInteger)size.height];
-}
-
-static inline NSString *formatRect(CGRect r) {
-
-    return [[NSString alloc] initWithFormat:@"%dx%d:%dx%d",
-                                            (NSInteger)r.origin.x,
-                                            (NSInteger)r.origin.y,
-                                            (NSInteger)(r.origin.x + r.size.width),
-                                            (NSInteger)(r.origin.y + r.size.height)
-    ];
-}
-
-- (NSArray *)options;
+- (NSArray *)URLOptions;
 {
     NSMutableArray *params = [[NSMutableArray alloc] init];
     
@@ -200,13 +243,20 @@ static inline NSString *formatRect(CGRect r) {
     return [params copy];
 }
 
-- (NSString *)optionsPath;
+- (NSString *)URLOptionsPath;
 {
-    return [NSString pathWithComponents:self.options];
+    return [NSString pathWithComponents:self.URLOptions];
 }
 
+- (TUOptions *)optionsWithSize:(CGSize)newSize;
+{
+    TUOptions *newOptions = [self copy];
+    newOptions.targetSize = newSize;
+    return newOptions;
+}
 
 @end
+
 
 @implementation NSURL (ThumborURL)
 
@@ -225,7 +275,7 @@ static inline NSString *formatRect(CGRect r) {
     imageHashString = [imageHashString stringByReplacingOccurrencesOfString:@"[<> ]" withString:@"" options:NSRegularExpressionSearch range:NSMakeRange(0, imageHashString.length)];
 
     // The URL we want to encrypt is appended by the imageHashString
-    NSString *urlToEncrypt = [options.optionsPath stringByAppendingFormat:@"/%@", imageHashString];
+    NSString *urlToEncrypt = [options.URLOptionsPath stringByAppendingFormat:@"/%@", imageHashString];
 
     // Pad it to 16 bytes
     size_t paddingNeeded = (16 - [urlToEncrypt lengthOfBytesUsingEncoding:NSUTF8StringEncoding] % 16);
@@ -257,7 +307,8 @@ static inline NSString *formatRect(CGRect r) {
                                                       NULL,
                                                       buffer.mutableBytes,
                                                       buffer.length,
-                                                      &cryptor, NULL);
+                                                      &cryptor,
+                                                      NULL);
 
     assert(status == kCCSuccess);
     assert(cryptor);
@@ -302,3 +353,19 @@ static inline NSString *formatRect(CGRect r) {
 }
 
 @end
+
+
+static inline NSString *formatSize(CGSize size) {
+    return [[NSString alloc] initWithFormat:@"%dx%d", (NSInteger)size.width, (NSInteger)size.height];
+}
+
+static inline NSString *formatRect(CGRect r) {
+
+    return [[NSString alloc] initWithFormat:@"%dx%d:%dx%d",
+                                            (NSInteger)r.origin.x,
+                                            (NSInteger)r.origin.y,
+                                            (NSInteger)(r.origin.x + r.size.width),
+                                            (NSInteger)(r.origin.y + r.size.height)
+    ];
+}
+
