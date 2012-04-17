@@ -3,26 +3,8 @@
 //  thumborurl
 //
 //  Created by Mike Lewis on 4/16/12.
-//  Copyright (c) 2012 Mike Lewis. All rights reserved.
+//  Copyright (c) 2012 Square, Inc. All rights reserved.
 //
-//  Permission is hereby granted, free of charge, to any person obtaining a
-//  copy of this software and associated documentation files (the "Software"),
-//  to deal in the Software without restriction, including without limitation
-//  the rights to use, copy, modify, merge, publish, distribute, sublicense,
-//  and/or sell copies of the Software, and to permit persons to whom the
-//  Software is furnished to do so, subject to the following conditions:
-//
-//  The above copyright notice and this permission notice shall be included in
-//  all copies or substantial portions of the Software.
-//
-//  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-//  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-//  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-//  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-//  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
-//  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
-//  DEALINGS IN THE SOFTWARE.
-
 
 #import "ThumborURL.h"
 #import "base64urlsafe.h"
@@ -73,13 +55,36 @@
 @synthesize filters = _filters;
 @synthesize vflip = _vflip;
 @synthesize hflip = _hflip;
+@synthesize scale = _scale;
+
+- (id)init
+{
+    self = [super init];
+    if (self) {
+        _scale = 1.0f;
+    }
+    return self;
+}
 
 + (NSArray *)keysToCopy;
 {
     static NSArray *keys = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        keys = [[NSArray alloc] initWithObjects:@"targetSize", @"smart", @"debug", @"meta", @"crop", @"fitIn", @"valign", @"halign", @"filters", @"vflip", @"hflip", nil];
+        keys = [[NSArray alloc] initWithObjects:
+                @"targetSize",
+                @"smart",
+                @"debug",
+                @"meta", 
+                @"crop", 
+                @"fitIn",
+                @"valign",
+                @"halign", 
+                @"filters",
+                @"vflip",
+                @"hflip",
+                @"scale",
+                nil];
     });
     return keys;
 }
@@ -136,12 +141,15 @@ static inline NSString *formatRect(CGRect r) {
     }
 
     CGSize size = _targetSize;
+    
+    size.width *= _scale;
+    size.height *= _scale;
 
-    if (_vflip) {
+    if (_hflip) {
         size.width *= -1;
     }
 
-    if (_hflip) {
+    if (_vflip) {
         size.height *= -1;
     }
 
@@ -219,6 +227,8 @@ static inline NSString *formatRect(CGRect r) {
     // The URL we want to encrypt is appended by the imageHashString
     NSString *urlToEncrypt = [options.optionsPath stringByAppendingFormat:@"/%@", imageHashString];
 
+    NSLog(@"%@", urlToEncrypt);
+    
     // Pad it to 16 bytes
     size_t paddingNeeded = (16 - [urlToEncrypt lengthOfBytesUsingEncoding:NSUTF8StringEncoding] % 16);
     urlToEncrypt = [urlToEncrypt stringByPaddingToLength:urlToEncrypt.length + paddingNeeded withString:@"{" startingAtIndex:0];
@@ -241,8 +251,14 @@ static inline NSString *formatRect(CGRect r) {
     NSMutableData *buffer = [[NSMutableData alloc] initWithLength:2048];
 
     CCCryptorRef cryptor = NULL;
-    CCCryptorStatus  status = CCCryptorCreateFromData(kCCEncrypt, kCCAlgorithmAES128, kCCOptionECBMode, key.bytes,
-                                                      key.length, NULL, buffer.mutableBytes, buffer.length,
+    CCCryptorStatus  status = CCCryptorCreateFromData(kCCEncrypt, 
+                                                      kCCAlgorithmAES128,
+                                                      kCCOptionECBMode,
+                                                      key.bytes,
+                                                      key.length,
+                                                      NULL,
+                                                      buffer.mutableBytes,
+                                                      buffer.length,
                                                       &cryptor, NULL);
 
     assert(status == kCCSuccess);
@@ -261,8 +277,7 @@ static inline NSString *formatRect(CGRect r) {
 
     currentOffset += dataMoved;
 
-    CCCryptorFinal(cryptor, result.mutableBytes + currentOffset, result.length - currentOffset,
-                   &dataMoved);
+    CCCryptorFinal(cryptor, result.mutableBytes + currentOffset, result.length - currentOffset, &dataMoved);
 
     currentOffset += dataMoved;
     assert(currentOffset == result.length);
@@ -282,7 +297,6 @@ static inline NSString *formatRect(CGRect r) {
     NSString *encodedString = [[NSString alloc] initWithData:secureURL encoding:NSUTF8StringEncoding];
     
     // Append the image URL to it
-
     NSString *finalURL = [[NSString alloc] initWithFormat:@"/%@/%@", encodedString, imageURLString];
     
     // Make it relative to the base URL    
