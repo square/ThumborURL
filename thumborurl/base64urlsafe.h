@@ -14,8 +14,8 @@
 //
 
 
-#ifndef SocketRocket_base64_h
-#define SocketRocket_base64_h
+#ifndef base64urlsafe_h
+#define base64urlsafe_h
 
 #include <sys/types.h>
 

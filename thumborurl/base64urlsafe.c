@@ -44,9 +44,6 @@
 
 /* OPENBSD ORIGINAL: lib/libc/net/base64.c */
 
-
-#if (!defined(HAVE_B64_NTOP) && !defined(HAVE___B64_NTOP)) || (!defined(HAVE_B64_PTON) && !defined(HAVE___B64_PTON))
-
 #include <sys/types.h>
 #include <sys/param.h>
 #include <sys/socket.h>
@@ -128,7 +125,6 @@ static const char Pad64 = '=';
  characters followed by one "=" padding character.
  */
 
-#if !defined(HAVE_B64_NTOP) && !defined(HAVE___B64_NTOP) 
 int
 b64_ntop_urlsafe(u_char const *src, size_t srclength, char *target, size_t targsize)
 {
@@ -182,5 +178,3 @@ b64_ntop_urlsafe(u_char const *src, size_t srclength, char *target, size_t targs
 	target[datalength] = '\0';	/* Returned value doesn't count \0. */
 	return (datalength);
 }
-#endif /* !defined(HAVE_B64_NTOP) && !defined(HAVE___B64_NTOP) */
-#endif 
