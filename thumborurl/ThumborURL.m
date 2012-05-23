@@ -233,7 +233,7 @@ static inline NSString *formatSize(CGSize size);
         [filterStrings addObject:@"filters"];
 
         for (TUFilter *f in _filters) {
-            NSString *str = [[NSString alloc] initWithFormat:@"%s(%s)", f.name, [f.arguments componentsJoinedByString:@","]];
+            NSString *str = [[NSString alloc] initWithFormat:@"%@(%@)", f.name, [f.arguments componentsJoinedByString:@","]];
             [filterStrings addObject:str];
         }
 
