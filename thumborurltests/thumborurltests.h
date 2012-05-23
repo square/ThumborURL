@@ -3,7 +3,7 @@
 //  thumborurltests
 //
 //  Created by Mike Lewis on 4/16/12.
-//  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
+//  Copyright (c) 2012 Square Inc. All rights reserved.
 //
 
 #import <SenTestingKit/SenTestingKit.h>
