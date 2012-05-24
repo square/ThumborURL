@@ -46,6 +46,14 @@ static inline NSString *formatSize(CGSize size);
     return self;
 }
 
+- (void)dealloc;
+{
+    [_baseURL release]; _baseURL = nil;
+    [_globalSecurityKey release]; _globalSecurityKey = nil;
+    
+    [super dealloc];
+}
+
 - (NSURL *)secureURLWithImageURL:(NSURL *)imageURL options:(TUOptions *)options;
 {
     NSAssert(self.globalSecurityKey, @"globalSecurityKey required for calling %@", NSStringFromSelector( _cmd));
@@ -70,22 +78,29 @@ static inline NSString *formatSize(CGSize size);
     TUFilter *f = [[[self class] alloc] init];
     f.arguments = arguments;
     f.name = name;
-    return f;
+    return [f autorelease];
 }
 
 + (id)filterWithName:(NSString *)name arguments:(id)firstArg, ...;
 {
-    NSMutableArray *argsAry = [[NSMutableArray alloc] init];
+    NSMutableArray *argsAry = [NSMutableArray array];
     
     va_list args;
     va_start(args, firstArg);
-    for (id arg = firstArg; arg != nil; arg = va_arg(args, id))
-    {
+    for (id arg = firstArg; arg != nil; arg = va_arg(args, id)) {
         [argsAry addObject:arg];
     }
     va_end(args);
     
     return [self filterWithName:name argumentsArray:argsAry];
+}
+
+- (void)dealloc;
+{
+    [_name release]; _name = nil;
+    [_arguments release]; _arguments = nil;
+    
+    [super dealloc];
 }
 
 @end
@@ -114,13 +129,23 @@ static inline NSString *formatSize(CGSize size);
 @synthesize hflip = _hflip;
 @synthesize scale = _scale;
 
-- (id)init
+- (id)init;
 {
     self = [super init];
-    if (self) {
-        _scale = 1.0f;
+    if (!self) {
+        return nil;
     }
+    
+    _scale = 1.0f;
+    
     return self;
+}
+
+- (void)dealloc;
+{
+    [_filters release]; _filters = nil;
+    
+    [super dealloc];
 }
 
 + (NSArray *)keysToCopy;
@@ -168,7 +193,7 @@ static inline NSString *formatSize(CGSize size);
     }
 
     if (!CGRectEqualToRect(_crop, CGRectZero)) {
-            [params addObject:formatRect(_crop)];
+        [params addObject:formatRect(_crop)];
     }
 
     switch (_fitIn) {
@@ -235,12 +260,14 @@ static inline NSString *formatSize(CGSize size);
         for (TUFilter *f in _filters) {
             NSString *str = [[NSString alloc] initWithFormat:@"%@(%@)", f.name, [f.arguments componentsJoinedByString:@","]];
             [filterStrings addObject:str];
+            [str release];
         }
 
         [params addObject:[filterStrings componentsJoinedByString:@":"]];
+        [filterStrings release];
     }
 
-    return [params copy];
+    return [[params copy] autorelease];
 }
 
 - (NSString *)URLOptionsPath;
@@ -252,7 +279,7 @@ static inline NSString *formatSize(CGSize size);
 {
     TUOptions *newOptions = [self copy];
     newOptions.targetSize = newSize;
-    return newOptions;
+    return [newOptions autorelease];
 }
 
 @end
@@ -267,7 +294,6 @@ static inline NSString *formatSize(CGSize size);
     // Remove the query from calculating the hash
     NSString *imageURLString = imageURL.absoluteString;
 
-
     NSString *query = imageURL.query;
     if (query != nil) {
         imageURLString = [imageURLString substringToIndex:imageURLString.length - (query.length + 1)];
@@ -275,7 +301,7 @@ static inline NSString *formatSize(CGSize size);
 
     // MD5 the imageURLString
     NSData *imageURLStringData = [imageURLString dataUsingEncoding:NSUTF8StringEncoding];
-    NSMutableData *imageHash = [[NSMutableData alloc] initWithLength:CC_MD5_DIGEST_LENGTH];
+    NSMutableData *imageHash = [NSMutableData dataWithLength:CC_MD5_DIGEST_LENGTH];
     CC_MD5(imageURLStringData.bytes, imageURLStringData.length, imageHash.mutableBytes);
     
     NSString *imageHashString = [imageHash description];
@@ -306,7 +332,7 @@ static inline NSString *formatSize(CGSize size);
     NSMutableData *buffer = [[NSMutableData alloc] initWithLength:2048];
 
     CCCryptorRef cryptor = NULL;
-    CCCryptorStatus  status = CCCryptorCreateFromData(kCCEncrypt, 
+    CCCryptorStatus status = CCCryptorCreateFromData(kCCEncrypt, 
                                                       kCCAlgorithmAES128,
                                                       kCCOptionECBMode,
                                                       key.bytes,
@@ -326,9 +352,7 @@ static inline NSString *formatSize(CGSize size);
 
     size_t currentOffset = 0;
     size_t dataMoved = 0;
-    status = CCCryptorUpdate(cryptor, dataToEncrypt.bytes, dataToEncrypt.length,
-                  result.mutableBytes, result.length, &dataMoved);
-    
+    status = CCCryptorUpdate(cryptor, dataToEncrypt.bytes, dataToEncrypt.length, result.mutableBytes, result.length, &dataMoved);
     assert(status == kCCSuccess);
 
     currentOffset += dataMoved;
@@ -342,37 +366,36 @@ static inline NSString *formatSize(CGSize size);
     cryptor = NULL;
     
     memset(buffer.mutableBytes, 0, buffer.length);
+    [buffer release];
     
     // Now we're finished encrypting the url, let's Base64 encode it
-    
-    NSMutableData *secureURL = [[NSMutableData alloc] initWithLength:((result.length + 2) * 3 / 2)];
-    
+    NSMutableData *secureURL = [NSMutableData dataWithLength:((result.length + 2) * 3 / 2)];
     size_t newLen = b64_ntop_urlsafe(result.bytes, result.length, secureURL.mutableBytes, secureURL.length);
     secureURL.length = newLen;
-    
-    NSString *encodedString = [[NSString alloc] initWithData:secureURL encoding:NSUTF8StringEncoding];
+    [result release];
     
     // Append the image URL to it
-    NSString *finalURL = [[NSString alloc] initWithFormat:@"/%@/%@", encodedString, imageURLString];
+    NSString *encodedString = [[NSString alloc] initWithData:secureURL encoding:NSUTF8StringEncoding];
+    NSString *finalURL = [NSString stringWithFormat:@"/%@/%@", encodedString, imageURLString];
+    [encodedString release];
     
     // Make it relative to the base URL    
-    return [[NSURL alloc] initWithString:finalURL relativeToURL:baseURL];
+    return [NSURL URLWithString:finalURL relativeToURL:baseURL];
 }
 
 @end
 
 
 static inline NSString *formatSize(CGSize size) {
-    return [[NSString alloc] initWithFormat:@"%dx%d", (NSInteger)size.width, (NSInteger)size.height];
+    return [NSString stringWithFormat:@"%dx%d", (NSInteger)size.width, (NSInteger)size.height];
 }
 
 static inline NSString *formatRect(CGRect r) {
-
-    return [[NSString alloc] initWithFormat:@"%dx%d:%dx%d",
-                                            (NSInteger)r.origin.x,
-                                            (NSInteger)r.origin.y,
-                                            (NSInteger)(r.origin.x + r.size.width),
-                                            (NSInteger)(r.origin.y + r.size.height)
+    return [NSString stringWithFormat:@"%dx%d:%dx%d",
+            (NSInteger)r.origin.x,
+            (NSInteger)r.origin.y,
+            (NSInteger)(r.origin.x + r.size.width),
+            (NSInteger)(r.origin.y + r.size.height)
     ];
 }
 
