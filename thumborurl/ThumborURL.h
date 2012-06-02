@@ -43,6 +43,9 @@ typedef enum {
 @property (nonatomic, copy) NSURL *baseURL;
 @property (nonatomic, copy) NSString *globalSecurityKey;
 
+// Generating secure URLs takes some time, so we cache them in memory.
+@property (nonatomic, retain, readonly) NSCache *secureURLCache;
+
 // globalSecurityKey must be set
 - (NSURL *)secureURLWithImageURL:(NSURL *)imageURL options:(TUOptions *)options;
 
