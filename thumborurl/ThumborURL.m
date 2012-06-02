@@ -15,11 +15,25 @@
 static inline NSString *formatRect(CGRect r);
 static inline NSString *formatSize(CGSize size);
 
+@interface TUOptions ()
+
+- (NSArray *)URLOptions;
+- (NSString *)URLOptionsPath;
+
+@end
+
+
+@interface TUEndpointConfiguration ()
+
+@property (nonatomic, retain, readwrite) NSCache *secureURLCache;
+
+@end
 
 @implementation TUEndpointConfiguration
 
 @synthesize baseURL = _baseURL;
 @synthesize globalSecurityKey = _globalSecurityKey;
+@synthesize secureURLCache = _secureURLCache;
 
 - (id)initWithBaseURL:(NSURL *)baseURL securityKey:(NSString *)securityKey;
 {
@@ -31,25 +45,23 @@ static inline NSString *formatSize(CGSize size);
     self.baseURL = baseURL;
     self.globalSecurityKey = securityKey;
 
+    self.secureURLCache = [[[NSCache alloc] init] autorelease];
+    [self.secureURLCache setEvictsObjectsWithDiscardedContent:NO];
+    [self.secureURLCache setCountLimit:NSIntegerMax];
+        
     return self;
 }
 
 - (id)initWithBaseURL:(NSURL *)baseURL;
 {
-    self = [super init];
-    if (!self) {
-        return nil;
-    }
-
-    self.baseURL = baseURL;
-
-    return self;
+    return [self initWithBaseURL:baseURL securityKey:nil];
 }
 
 - (void)dealloc;
 {
     [_baseURL release]; _baseURL = nil;
     [_globalSecurityKey release]; _globalSecurityKey = nil;
+    [_secureURLCache release]; _secureURLCache = nil;
     
     [super dealloc];
 }
@@ -62,7 +74,19 @@ static inline NSString *formatSize(CGSize size);
 
 - (NSURL *)secureURLWithImageURL:(NSURL *)imageURL options:(TUOptions *)options securityKey:(NSString *)securityKey;
 {
-    return [NSURL TU_secureURLWithOptions:options imageURL:imageURL baseURL:self.baseURL securityKey:securityKey];
+    NSString *cacheKey = [NSString stringWithFormat:@"%@-%@", imageURL.absoluteString, options.URLOptionsPath];
+    NSURL *cachedURL = [self.secureURLCache objectForKey:cacheKey];
+    if (cachedURL) {
+        return cachedURL;
+    }
+        
+    NSURL *secureURL = [NSURL TU_secureURLWithOptions:options imageURL:imageURL baseURL:self.baseURL securityKey:securityKey];
+    if (secureURL) {
+        [self.secureURLCache setObject:secureURL forKey:cacheKey];
+        return secureURL;
+    }
+    
+    return nil;
 }
 
 @end
@@ -102,14 +126,6 @@ static inline NSString *formatSize(CGSize size);
     
     [super dealloc];
 }
-
-@end
-
-
-@interface TUOptions ()
-
-- (NSArray *)URLOptions;
-- (NSString *)URLOptionsPath;
 
 @end
 
