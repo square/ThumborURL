@@ -198,7 +198,7 @@ static inline NSString *formatSize(CGSize size);
 
 - (NSArray *)URLOptions;
 {
-    NSMutableArray *params = [[NSMutableArray alloc] init];
+    NSMutableArray *params = [NSMutableArray array];
     
     if (_debug) {
         [params addObject:@"debug"];
