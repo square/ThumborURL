@@ -348,6 +348,7 @@ static inline NSString *formatSize(CGSize size);
     NSMutableData *buffer = [[NSMutableData alloc] initWithLength:2048];
 
     CCCryptorRef cryptor = NULL;
+    size_t dataUsed = 0;
     CCCryptorStatus status = CCCryptorCreateFromData(kCCEncrypt, 
                                                       kCCAlgorithmAES128,
                                                       kCCOptionECBMode,
@@ -357,7 +358,7 @@ static inline NSString *formatSize(CGSize size);
                                                       buffer.mutableBytes,
                                                       buffer.length,
                                                       &cryptor,
-                                                      NULL);
+                                                      &dataUsed);
 
     assert(status == kCCSuccess);
     assert(cryptor);
