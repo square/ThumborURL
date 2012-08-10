@@ -156,7 +156,7 @@ static inline NSString *formatSize(CGSize size);
 + (NSArray *)keysToCopy;
 {
     static NSArray *keys = nil;
-    static dispatch_once_t onceToken;
+    static dispatch_once_t onceToken = 0;
     
     dispatch_once(&onceToken, ^{
         keys = [@[
