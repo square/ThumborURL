@@ -9,23 +9,10 @@
 #import "thumborurltests.h"
 #import "ThumborURL.h"
 
+
 @implementation thumborurltests
 
-- (void)setUp
-{
-    [super setUp];
-    
-    // Set-up code here.
-}
-
-- (void)tearDown
-{
-    // Tear-down code here.
-    
-    [super tearDown];
-}
-
-- (void)testSimpleURL
+- (void)testSimpleURL;
 {
     TUOptions *opts = [[TUOptions alloc] init];
     
@@ -39,7 +26,7 @@
     STAssertEqualObjects(expectedURL, u.relativeString, @"Should work");
 }
 
-- (void)testOpts
+- (void)testOpts;
 {
     TUOptions *opts = [[TUOptions alloc] init];
     
@@ -58,7 +45,7 @@
     STAssertEqualObjects(expectedURL, u.relativeString, @"Should be equal to command line generated version");
 }
 
-- (void)testScale
+- (void)testScale;
 {
     TUOptions *opts = [[TUOptions alloc] init];
     
@@ -78,7 +65,7 @@
     STAssertEqualObjects(expectedURL, u.relativeString, @"Should be equal to command line generated version");
 }
 
-- (void)testCopy
+- (void)testCopy;
 {
     TUOptions *opts = [[TUOptions alloc] init];
     

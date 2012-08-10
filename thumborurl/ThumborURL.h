@@ -13,28 +13,31 @@
 @class TUOptions;
 
 
-typedef enum {
+enum {
     TUFitInNone = 0,
     TUFitInNormal,
     TUFitInAdaptive
-} TUFitInMode;
+};
+typedef NSUInteger TUFitInMode;
 
-typedef enum {
+enum {
     TUVerticalAlignMiddle = 0,
     TUVerticalAlignTop,
     TUVerticalAlignBottom,
-} TUVerticalAlignment;
+};
+typedef NSUInteger TUVerticalAlignment;
 
-typedef enum {
+enum {
     TUHorizontalAlignCenter = 0,
     TUHorizontalAlignLeft,
     TUHorizontalAlignRight,
-} TUHorizontalAlignment;
+};
+typedef NSUInteger TUHorizontalAlignment;
 
 
-// TUEndpoints represent a thumbor endpoint
-// An endpoint can either have a global key or a key per image
-// If no key is specified, a key per image is required
+// TUEndpoints represent a thumbor endpoint.
+// An endpoint can either have a global key or a key per image.
+// If no key is specified, a key per image is required.
 @interface TUEndpointConfiguration : NSObject
 
 - (id)initWithBaseURL:(NSURL *)baseURL securityKey:(NSString *)securityKey;
@@ -49,7 +52,7 @@ typedef enum {
 // globalSecurityKey must be set
 - (NSURL *)secureURLWithImageURL:(NSURL *)imageURL options:(TUOptions *)options;
 
-// This one can be used with a per-image security key
+// This one can be used with a per-image security key.
 - (NSURL *)secureURLWithImageURL:(NSURL *)imageURL options:(TUOptions *)options securityKey:(NSString *)securityKey;
 
 @end
@@ -57,7 +60,7 @@ typedef enum {
 
 @interface TUOptions : NSObject <NSCopying>
 
-// Make a copy of options and assign a new size
+// Make a copy of options and assign a new size.
 - (TUOptions *)optionsWithSize:(CGSize)newSize;
 
 @property (nonatomic, assign) CGSize targetSize;
@@ -97,4 +100,3 @@ typedef enum {
 + (id)TU_secureURLWithOptions:(TUOptions *)options imageURL:(NSURL *)imageURL baseURL:(NSURL *)baseURL securityKey:(NSString *)securityKey;
 
 @end
-
