@@ -12,8 +12,10 @@
 #import <CommonCrypto/CommonDigest.h>
 #import <CommonCrypto/CommonCryptor.h>
 
+
 static inline NSString *formatRect(CGRect r);
 static inline NSString *formatSize(CGSize size);
+
 
 @interface TUOptions ()
 
@@ -29,11 +31,8 @@ static inline NSString *formatSize(CGSize size);
 
 @end
 
-@implementation TUEndpointConfiguration
 
-@synthesize baseURL = _baseURL;
-@synthesize globalSecurityKey = _globalSecurityKey;
-@synthesize secureURLCache = _secureURLCache;
+@implementation TUEndpointConfiguration
 
 - (id)initWithBaseURL:(NSURL *)baseURL securityKey:(NSString *)securityKey;
 {
@@ -42,12 +41,12 @@ static inline NSString *formatSize(CGSize size);
         return nil;
     }
 
-    self.baseURL = baseURL;
-    self.globalSecurityKey = securityKey;
+    _baseURL = [baseURL copy];
+    _globalSecurityKey = [securityKey copy];
 
-    self.secureURLCache = [[[NSCache alloc] init] autorelease];
-    [self.secureURLCache setEvictsObjectsWithDiscardedContent:NO];
-    [self.secureURLCache setCountLimit:NSIntegerMax];
+    _secureURLCache = [[NSCache alloc] init];
+    [_secureURLCache setEvictsObjectsWithDiscardedContent:NO];
+    [_secureURLCache setCountLimit:NSIntegerMax];
         
     return self;
 }
@@ -59,9 +58,12 @@ static inline NSString *formatSize(CGSize size);
 
 - (void)dealloc;
 {
-    [_baseURL release]; _baseURL = nil;
-    [_globalSecurityKey release]; _globalSecurityKey = nil;
-    [_secureURLCache release]; _secureURLCache = nil;
+    [_baseURL release];
+    _baseURL = nil;
+    [_globalSecurityKey release];
+    _globalSecurityKey = nil;
+    [_secureURLCache release];
+    _secureURLCache = nil;
     
     [super dealloc];
 }
@@ -94,15 +96,12 @@ static inline NSString *formatSize(CGSize size);
 
 @implementation TUFilter
 
-@synthesize name = _name;
-@synthesize arguments = _arguments;
-
 + (id)filterWithName:(NSString *)name argumentsArray:(NSArray *)arguments;
 {
-    TUFilter *f = [[[self class] alloc] init];
-    f.arguments = arguments;
-    f.name = name;
-    return [f autorelease];
+    TUFilter *filter = [[[self class] alloc] init];
+    filter.arguments = arguments;
+    filter.name = name;
+    return [filter autorelease];
 }
 
 + (id)filterWithName:(NSString *)name arguments:(id)firstArg, ...;
@@ -121,8 +120,10 @@ static inline NSString *formatSize(CGSize size);
 
 - (void)dealloc;
 {
-    [_name release]; _name = nil;
-    [_arguments release]; _arguments = nil;
+    [_name release];
+    _name = nil;
+    [_arguments release];
+    _arguments = nil;
     
     [super dealloc];
 }
@@ -131,19 +132,6 @@ static inline NSString *formatSize(CGSize size);
 
 
 @implementation TUOptions
-
-@synthesize targetSize = _targetSize;
-@synthesize smart = _smart;
-@synthesize debug = _debug;
-@synthesize meta = _meta;
-@synthesize crop = _crop;
-@synthesize fitIn = _fitIn;
-@synthesize valign = _valign;
-@synthesize halign = _halign;
-@synthesize filters = _filters;
-@synthesize vflip = _vflip;
-@synthesize hflip = _hflip;
-@synthesize scale = _scale;
 
 - (id)init;
 {
@@ -159,7 +147,8 @@ static inline NSString *formatSize(CGSize size);
 
 - (void)dealloc;
 {
-    [_filters release]; _filters = nil;
+    [_filters release];
+    _filters = nil;
     
     [super dealloc];
 }
@@ -167,23 +156,25 @@ static inline NSString *formatSize(CGSize size);
 + (NSArray *)keysToCopy;
 {
     static NSArray *keys = nil;
-    static dispatch_once_t onceToken;
+    static dispatch_once_t onceToken = 0;
+    
     dispatch_once(&onceToken, ^{
-        keys = [[NSArray alloc] initWithObjects:
-                @"targetSize",
-                @"smart",
-                @"debug",
-                @"meta", 
-                @"crop", 
-                @"fitIn",
-                @"valign",
-                @"halign", 
-                @"filters",
-                @"vflip",
-                @"hflip",
-                @"scale",
-                nil];
+        keys = [@[
+            @"targetSize",
+            @"smart",
+            @"debug",
+            @"meta", 
+            @"crop", 
+            @"fitIn",
+            @"valign",
+            @"halign", 
+            @"filters",
+            @"vflip",
+            @"hflip",
+            @"scale"
+        ] retain];
     });
+    
     return keys;
 }
 
@@ -216,25 +207,25 @@ static inline NSString *formatSize(CGSize size);
         case TUFitInAdaptive:
             [params addObject:@"adaptive-fit-in"];
             break;
+            
         case TUFitInNormal:
             [params addObject:@"fit-in"];
             break;
+            
         case TUFitInNone:
-            // Do nothing
+            // Do nothing.
             break;
     }
 
     CGSize size = _targetSize;
-    
     size.width *= _scale;
     size.height *= _scale;
 
     if (_hflip) {
-        size.width *= -1;
+        size.width *= -1.0f;
     }
-
     if (_vflip) {
-        size.height *= -1;
+        size.height *= -1.0f;
     }
 
     if (!CGSizeEqualToSize(size, CGSizeZero)) {
@@ -245,11 +236,13 @@ static inline NSString *formatSize(CGSize size);
         case TUHorizontalAlignLeft:
             [params addObject:@"left"];
             break;
+            
         case TUHorizontalAlignRight:
             [params addObject:@"right"];
             break;
+            
         case TUHorizontalAlignCenter:
-            // Do nothing
+            // Do nothing.
             break;
     }
 
@@ -257,11 +250,13 @@ static inline NSString *formatSize(CGSize size);
         case TUVerticalAlignTop:
             [params addObject:@"top"];
             break;
+            
         case TUVerticalAlignBottom:
             [params addObject:@"bottom"];
             break;
+            
         case TUVerticalAlignMiddle:
-            // Do nothing
+            // Do nothing.
             break;
     }
 
@@ -270,11 +265,11 @@ static inline NSString *formatSize(CGSize size);
     }
 
     if (_filters.count) {
-        NSMutableArray *filterStrings = [[NSMutableArray alloc] initWithCapacity:_filters.count + 1];
+        NSMutableArray *filterStrings = [[NSMutableArray alloc] initWithCapacity:(_filters.count + 1)];
         [filterStrings addObject:@"filters"];
 
-        for (TUFilter *f in _filters) {
-            NSString *str = [[NSString alloc] initWithFormat:@"%@(%@)", f.name, [f.arguments componentsJoinedByString:@","]];
+        for (TUFilter *filter in _filters) {
+            NSString *str = [[NSString alloc] initWithFormat:@"%@(%@)", filter.name, [filter.arguments componentsJoinedByString:@","]];
             [filterStrings addObject:str];
             [str release];
         }
@@ -307,7 +302,7 @@ static inline NSString *formatSize(CGSize size);
 {
     assert(securityKey.length > 0);
 
-    // Remove the query from calculating the hash
+    // Remove the query from calculating the hash.
     NSString *imageURLString = imageURL.absoluteString;
 
     NSString *query = imageURL.query;
@@ -315,7 +310,7 @@ static inline NSString *formatSize(CGSize size);
         imageURLString = [imageURLString substringToIndex:imageURLString.length - (query.length + 1)];
     }
 
-    // MD5 the imageURLString
+    // MD5 the imageURLString.
     NSData *imageURLStringData = [imageURLString dataUsingEncoding:NSUTF8StringEncoding];
     NSMutableData *imageHash = [NSMutableData dataWithLength:CC_MD5_DIGEST_LENGTH];
     CC_MD5(imageURLStringData.bytes, imageURLStringData.length, imageHash.mutableBytes);
@@ -323,42 +318,42 @@ static inline NSString *formatSize(CGSize size);
     NSString *imageHashString = [imageHash description];
     imageHashString = [imageHashString stringByReplacingOccurrencesOfString:@"[<> ]" withString:@"" options:NSRegularExpressionSearch range:NSMakeRange(0, imageHashString.length)];
 
-    // The URL we want to encrypt is appended by the imageHashString
+    // The URL we want to encrypt is appended by the imageHashString.
     NSString *urlToEncrypt = [options.URLOptionsPath stringByAppendingFormat:@"/%@", imageHashString];
 
-    // Pad it to 16 bytes
+    // Pad it to 16 bytes.
     size_t paddingNeeded = (16 - [urlToEncrypt lengthOfBytesUsingEncoding:NSUTF8StringEncoding] % 16);
     urlToEncrypt = [urlToEncrypt stringByPaddingToLength:urlToEncrypt.length + paddingNeeded withString:@"{" startingAtIndex:0];
     
     assert(urlToEncrypt.length % 16 == 0);
     
-    // Now we have the URL we want to encrypt
+    // Now we have the URL we want to encrypt.
     NSData *dataToEncrypt = [urlToEncrypt dataUsingEncoding:NSUTF8StringEncoding];
     
     const size_t keySize = kCCKeySizeAES128;
     
-    // Pad the key to 16 bytes
+    // Pad the key to 16 bytes.
     securityKey = [securityKey stringByPaddingToLength:16 withString:securityKey startingAtIndex:0];
     NSData *key = [securityKey dataUsingEncoding:NSUTF8StringEncoding];
     
     assert(securityKey.length == keySize);
     assert(key.length == keySize);
 
-    // Make the buffer twice the length
+    // Make the buffer twice the length.
     NSMutableData *buffer = [[NSMutableData alloc] initWithLength:2048];
 
     CCCryptorRef cryptor = NULL;
     size_t dataUsed = 0;
     CCCryptorStatus status = CCCryptorCreateFromData(kCCEncrypt, 
-                                                      kCCAlgorithmAES128,
-                                                      kCCOptionECBMode,
-                                                      key.bytes,
-                                                      key.length,
-                                                      NULL,
-                                                      buffer.mutableBytes,
-                                                      buffer.length,
-                                                      &cryptor,
-                                                      &dataUsed);
+                                                     kCCAlgorithmAES128,
+                                                     kCCOptionECBMode,
+                                                     key.bytes,
+                                                     key.length,
+                                                     NULL,
+                                                     buffer.mutableBytes,
+                                                     buffer.length,
+                                                     &cryptor,
+                                                     &dataUsed);
 
     assert(status == kCCSuccess);
     assert(cryptor);
@@ -385,34 +380,35 @@ static inline NSString *formatSize(CGSize size);
     memset(buffer.mutableBytes, 0, buffer.length);
     [buffer release];
     
-    // Now we're finished encrypting the url, let's Base64 encode it
+    // Now we're finished encrypting the url, let's Base64 encode it.
     NSMutableData *secureURL = [NSMutableData dataWithLength:((result.length + 2) * 3 / 2)];
     size_t newLen = b64_ntop_urlsafe(result.bytes, result.length, secureURL.mutableBytes, secureURL.length);
     secureURL.length = newLen;
     [result release];
     
-    // Append the image URL to it
+    // Append the image URL to it.
     NSString *encodedString = [[NSString alloc] initWithData:secureURL encoding:NSUTF8StringEncoding];
     NSString *finalURL = [NSString stringWithFormat:@"/%@/%@", encodedString, imageURLString];
     [encodedString release];
     
-    // Make it relative to the base URL    
+    // Make it relative to the base URL.
     return [NSURL URLWithString:finalURL relativeToURL:baseURL];
 }
 
 @end
 
 
-static inline NSString *formatSize(CGSize size) {
+static inline NSString *formatSize(CGSize size)
+{
     return [NSString stringWithFormat:@"%dx%d", (NSInteger)size.width, (NSInteger)size.height];
 }
 
-static inline NSString *formatRect(CGRect r) {
+static inline NSString *formatRect(CGRect r)
+{
     return [NSString stringWithFormat:@"%dx%d:%dx%d",
-            (NSInteger)r.origin.x,
-            (NSInteger)r.origin.y,
-            (NSInteger)(r.origin.x + r.size.width),
-            (NSInteger)(r.origin.y + r.size.height)
+        (NSInteger)r.origin.x,
+        (NSInteger)r.origin.y,
+        (NSInteger)(r.origin.x + r.size.width),
+        (NSInteger)(r.origin.y + r.size.height)
     ];
 }
-
