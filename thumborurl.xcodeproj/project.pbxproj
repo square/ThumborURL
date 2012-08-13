@@ -13,7 +13,6 @@
 		F6EC7489153CB2B300AF55B4 /* base64urlsafe.c in Sources */ = {isa = PBXBuildFile; fileRef = F6EC7487153CB2B300AF55B4 /* base64urlsafe.c */; };
 		F6EC748A153CB2B300AF55B4 /* base64urlsafe.h in Headers */ = {isa = PBXBuildFile; fileRef = F6EC7488153CB2B300AF55B4 /* base64urlsafe.h */; };
 		F6EC7492153CB63C00AF55B4 /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6EC7491153CB63C00AF55B4 /* SenTestingKit.framework */; };
-		F6EC7494153CB63C00AF55B4 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6EC7493153CB63C00AF55B4 /* UIKit.framework */; };
 		F6EC7495153CB63C00AF55B4 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F69614F8153C933E00AC1F5C /* Foundation.framework */; };
 		F6EC749B153CB63C00AF55B4 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = F6EC7499153CB63C00AF55B4 /* InfoPlist.strings */; };
 		F6EC749E153CB63C00AF55B4 /* thumborurltests.m in Sources */ = {isa = PBXBuildFile; fileRef = F6EC749D153CB63C00AF55B4 /* thumborurltests.m */; };
@@ -32,7 +31,6 @@
 		F6EC7488153CB2B300AF55B4 /* base64urlsafe.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = base64urlsafe.h; sourceTree = "<group>"; };
 		F6EC7490153CB63C00AF55B4 /* thumborurltests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = thumborurltests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
 		F6EC7491153CB63C00AF55B4 /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
-		F6EC7493153CB63C00AF55B4 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		F6EC7498153CB63C00AF55B4 /* thumborurltests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "thumborurltests-Info.plist"; sourceTree = "<group>"; };
 		F6EC749A153CB63C00AF55B4 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		F6EC749C153CB63C00AF55B4 /* thumborurltests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = thumborurltests.h; sourceTree = "<group>"; };
@@ -57,7 +55,6 @@
 			files = (
 				F6EC74A5153CB6C400AF55B4 /* libthumborurl.a in Frameworks */,
 				F6EC7492153CB63C00AF55B4 /* SenTestingKit.framework in Frameworks */,
-				F6EC7494153CB63C00AF55B4 /* UIKit.framework in Frameworks */,
 				F6EC7495153CB63C00AF55B4 /* Foundation.framework in Frameworks */,
 				F6EC74AA153CBB0500AF55B4 /* CoreGraphics.framework in Frameworks */,
 			);
@@ -91,7 +88,6 @@
 				F6EC74A8153CBB0000AF55B4 /* CoreGraphics.framework */,
 				F69614F8153C933E00AC1F5C /* Foundation.framework */,
 				F6EC7491153CB63C00AF55B4 /* SenTestingKit.framework */,
-				F6EC7493153CB63C00AF55B4 /* UIKit.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
