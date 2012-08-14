@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		F69614F9153C933E00AC1F5C /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F69614F8153C933E00AC1F5C /* Foundation.framework */; };
-		F696150B153C940000AC1F5C /* ThumborURL.h in Headers */ = {isa = PBXBuildFile; fileRef = F6961509153C940000AC1F5C /* ThumborURL.h */; };
+		F696150B153C940000AC1F5C /* ThumborURL.h in Headers */ = {isa = PBXBuildFile; fileRef = F6961509153C940000AC1F5C /* ThumborURL.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F696150C153C940000AC1F5C /* ThumborURL.m in Sources */ = {isa = PBXBuildFile; fileRef = F696150A153C940000AC1F5C /* ThumborURL.m */; };
 		F6EC7489153CB2B300AF55B4 /* base64urlsafe.c in Sources */ = {isa = PBXBuildFile; fileRef = F6EC7487153CB2B300AF55B4 /* base64urlsafe.c */; };
 		F6EC748A153CB2B300AF55B4 /* base64urlsafe.h in Headers */ = {isa = PBXBuildFile; fileRef = F6EC7488153CB2B300AF55B4 /* base64urlsafe.h */; };
@@ -290,6 +290,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 4.1;
 				ONLY_ACTIVE_ARCH = YES;
+				PUBLIC_HEADERS_FOLDER_PATH = "/usr/local/include/$(TARGET_NAME)";
 				SDKROOT = iphoneos;
 			};
 			name = Debug;
@@ -309,6 +310,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 4.1;
+				PUBLIC_HEADERS_FOLDER_PATH = "/usr/local/include/$(TARGET_NAME)";
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
 			};
@@ -325,7 +327,6 @@
 					"$(inherited)",
 					"\"$(SDKROOT)/usr/lib/system\"",
 				);
-				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 			};
@@ -342,7 +343,6 @@
 					"$(inherited)",
 					"\"$(SDKROOT)/usr/lib/system\"",
 				);
-				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 			};
