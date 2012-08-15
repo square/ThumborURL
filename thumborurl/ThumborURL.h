@@ -34,6 +34,12 @@ enum {
 };
 typedef NSUInteger TUHorizontalAlignment;
 
+enum {
+    TUEncryptionModeHMACSHA1 = 0,
+    TUEncryptionModeAES128,
+};
+typedef NSUInteger TUEncryptionMode;
+
 
 // TUEndpoints represent a thumbor endpoint.
 // An endpoint can either have a global key or a key per image.
@@ -80,6 +86,8 @@ typedef NSUInteger TUHorizontalAlignment;
 @property (nonatomic, copy) NSArray *filters;
 
 @property (nonatomic, assign) CGFloat scale;
+
+@property (nonatomic, assign) TUEncryptionMode encryption;
 
 @end
 
