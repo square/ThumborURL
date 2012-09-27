@@ -53,7 +53,7 @@ typedef NSUInteger TUEncryptionMode;
 @property (nonatomic, copy) NSString *globalSecurityKey;
 
 // Generating secure URLs takes some time, so we cache them in memory.
-@property (nonatomic, retain, readonly) NSCache *secureURLCache;
+@property (nonatomic, strong, readonly) NSCache *secureURLCache;
 
 // globalSecurityKey must be set
 - (NSURL *)secureURLWithImageURL:(NSURL *)imageURL options:(TUOptions *)options;
