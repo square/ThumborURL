@@ -34,6 +34,12 @@ enum {
 };
 typedef NSUInteger TUHorizontalAlignment;
 
+enum {
+    TUEncryptionModeHMACSHA1 = 0,
+    TUEncryptionModeAES128,
+};
+typedef NSUInteger TUEncryptionMode;
+
 
 // TUEndpoints represent a thumbor endpoint.
 // An endpoint can either have a global key or a key per image.
@@ -47,7 +53,7 @@ typedef NSUInteger TUHorizontalAlignment;
 @property (nonatomic, copy) NSString *globalSecurityKey;
 
 // Generating secure URLs takes some time, so we cache them in memory.
-@property (nonatomic, retain, readonly) NSCache *secureURLCache;
+@property (nonatomic, strong, readonly) NSCache *secureURLCache;
 
 // globalSecurityKey must be set
 - (NSURL *)secureURLWithImageURL:(NSURL *)imageURL options:(TUOptions *)options;
@@ -80,6 +86,8 @@ typedef NSUInteger TUHorizontalAlignment;
 @property (nonatomic, copy) NSArray *filters;
 
 @property (nonatomic, assign) CGFloat scale;
+
+@property (nonatomic, assign) TUEncryptionMode encryption;
 
 @end
 
