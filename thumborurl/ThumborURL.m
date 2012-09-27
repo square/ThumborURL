@@ -16,8 +16,8 @@
 
 static inline NSString *formatRect(CGRect r);
 static inline NSString *formatSize(CGSize size);
-static inline NSMutableData *TUCreateEncryptedAES128Data(NSString *imageURLString, NSString *optionsUrlPath, NSString *securityKey);
-static inline NSMutableData *TUCreateEncryptedHMACSHA1Data(NSString *imageURLString, NSString *securityKey);
+static inline NSData *TUCreateEncryptedAES128Data(NSString *imageURLString, NSString *optionsUrlPath, NSString *securityKey);
+static inline NSData *TUCreateEncryptedHMACSHA1Data(NSString *imageURLString, NSString *securityKey);
 
 
 @interface TUOptions ()
@@ -30,7 +30,7 @@ static inline NSMutableData *TUCreateEncryptedHMACSHA1Data(NSString *imageURLStr
 
 @interface TUEndpointConfiguration ()
 
-@property (nonatomic, retain, readwrite) NSCache *secureURLCache;
+@property (nonatomic, strong, readwrite) NSCache *secureURLCache;
 
 @end
 
@@ -59,17 +59,6 @@ static inline NSMutableData *TUCreateEncryptedHMACSHA1Data(NSString *imageURLStr
     return [self initWithBaseURL:baseURL securityKey:nil];
 }
 
-- (void)dealloc;
-{
-    [_baseURL release];
-    _baseURL = nil;
-    [_globalSecurityKey release];
-    _globalSecurityKey = nil;
-    [_secureURLCache release];
-    _secureURLCache = nil;
-    
-    [super dealloc];
-}
 
 - (NSURL *)secureURLWithImageURL:(NSURL *)imageURL options:(TUOptions *)options;
 {
@@ -104,7 +93,7 @@ static inline NSMutableData *TUCreateEncryptedHMACSHA1Data(NSString *imageURLStr
     TUFilter *filter = [[[self class] alloc] init];
     filter.arguments = arguments;
     filter.name = name;
-    return [filter autorelease];
+    return filter;
 }
 
 + (id)filterWithName:(NSString *)name arguments:(id)firstArg, ...;
@@ -121,15 +110,6 @@ static inline NSMutableData *TUCreateEncryptedHMACSHA1Data(NSString *imageURLStr
     return [self filterWithName:name argumentsArray:argsAry];
 }
 
-- (void)dealloc;
-{
-    [_name release];
-    _name = nil;
-    [_arguments release];
-    _arguments = nil;
-    
-    [super dealloc];
-}
 
 @end
 
@@ -148,13 +128,6 @@ static inline NSMutableData *TUCreateEncryptedHMACSHA1Data(NSString *imageURLStr
     return self;
 }
 
-- (void)dealloc;
-{
-    [_filters release];
-    _filters = nil;
-    
-    [super dealloc];
-}
 
 + (NSArray *)keysToCopy;
 {
@@ -162,7 +135,7 @@ static inline NSMutableData *TUCreateEncryptedHMACSHA1Data(NSString *imageURLStr
     static dispatch_once_t onceToken = 0;
     
     dispatch_once(&onceToken, ^{
-        keys = [@[
+        keys = @[
             @"targetSize",
             @"smart",
             @"debug",
@@ -176,7 +149,7 @@ static inline NSMutableData *TUCreateEncryptedHMACSHA1Data(NSString *imageURLStr
             @"hflip",
             @"scale",
             @"encryption"
-        ] retain];
+        ];
     });
     
     return keys;
@@ -275,14 +248,12 @@ static inline NSMutableData *TUCreateEncryptedHMACSHA1Data(NSString *imageURLStr
         for (TUFilter *filter in _filters) {
             NSString *str = [[NSString alloc] initWithFormat:@"%@(%@)", filter.name, [filter.arguments componentsJoinedByString:@","]];
             [filterStrings addObject:str];
-            [str release];
         }
 
         [params addObject:[filterStrings componentsJoinedByString:@":"]];
-        [filterStrings release];
     }
 
-    return [[params copy] autorelease];
+    return [params copy];
 }
 
 - (NSString *)URLOptionsPath;
@@ -294,7 +265,7 @@ static inline NSMutableData *TUCreateEncryptedHMACSHA1Data(NSString *imageURLStr
 {
     TUOptions *newOptions = [self copy];
     newOptions.targetSize = newSize;
-    return [newOptions autorelease];
+    return newOptions;
 }
 
 @end
@@ -316,7 +287,7 @@ static inline NSMutableData *TUCreateEncryptedHMACSHA1Data(NSString *imageURLStr
 
     // Encrypt URL based declared encryption scheme.
     NSString *suffix = nil;
-    NSMutableData *result = nil;
+    NSData *result = nil;
     switch (options.encryption) {
         case TUEncryptionModeAES128:
             suffix = imageURLString;
@@ -324,21 +295,21 @@ static inline NSMutableData *TUCreateEncryptedHMACSHA1Data(NSString *imageURLStr
             break;
 
         case TUEncryptionModeHMACSHA1:
-        default:
-            suffix = [[NSString stringWithFormat:@"%@/%@", options.URLOptionsPath, imageURLString] stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"/"]];
+        default: {
+            NSString *trimmedString = [imageURLString stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"/"]];
+            suffix = [options.URLOptionsPath stringByAppendingPathComponent:trimmedString];
             result = TUCreateEncryptedHMACSHA1Data(suffix, securityKey);
             break;
+        }
     }
 
     // Now we're finished encrypting the url, let's Base64 encode it.
     NSMutableData *secureURL = [NSMutableData dataWithLength:((result.length + 2) * 3 >> 1)];
-    size_t newLen = b64_ntop_urlsafe(result.bytes, result.length, secureURL.mutableBytes, secureURL.length);
-    secureURL.length = newLen;
-    [result release];
+    size_t newLength = b64_ntop_urlsafe(result.bytes, result.length, secureURL.mutableBytes, secureURL.length);
+    secureURL.length = newLength;
 
     NSString *encodedString = [[NSString alloc] initWithData:secureURL encoding:NSUTF8StringEncoding];
     NSString *finalURL = [NSString stringWithFormat:@"/%@/%@", encodedString, suffix];
-    [encodedString release];
 
     // Make it relative to the base URL.
     return [NSURL URLWithString:finalURL relativeToURL:baseURL];
@@ -347,19 +318,19 @@ static inline NSMutableData *TUCreateEncryptedHMACSHA1Data(NSString *imageURLStr
 @end
 
 
-static inline NSMutableData *TUCreateEncryptedHMACSHA1Data(NSString *imageURLString, NSString *securityKey)
+static inline NSData *TUCreateEncryptedHMACSHA1Data(NSString *imageURLString, NSString *securityKey)
 {
-    NSData *keyData  = [securityKey dataUsingEncoding:NSUTF8StringEncoding];
-    NSData *urlData = [imageURLString dataUsingEncoding:NSUTF8StringEncoding];
+    NSMutableData *buffer = [[NSMutableData alloc] initWithLength:CC_SHA1_DIGEST_LENGTH];
 
-    unsigned char charHmac[CC_SHA1_DIGEST_LENGTH];
+    CCHmac(kCCHmacAlgSHA1,
+           securityKey.UTF8String,    [securityKey    lengthOfBytesUsingEncoding:NSUTF8StringEncoding],
+           imageURLString.UTF8String, [imageURLString lengthOfBytesUsingEncoding:NSUTF8StringEncoding],
+           buffer.mutableBytes);
 
-    CCHmac(kCCHmacAlgSHA1, [keyData bytes], [keyData length], [urlData bytes], [urlData length], charHmac);
-
-    return [[NSMutableData alloc] initWithBytes:charHmac length:sizeof(charHmac)];
+    return buffer;
 }
 
-static inline NSMutableData *TUCreateEncryptedAES128Data(NSString *imageURLString, NSString *optionsUrlPath, NSString *securityKey)
+static inline NSData *TUCreateEncryptedAES128Data(NSString *imageURLString, NSString *optionsURLPath, NSString *securityKey)
 {
     // MD5 the imageURLString.
     NSData *imageURLStringData = [imageURLString dataUsingEncoding:NSUTF8StringEncoding];
@@ -370,7 +341,7 @@ static inline NSMutableData *TUCreateEncryptedAES128Data(NSString *imageURLStrin
     imageHashString = [imageHashString stringByReplacingOccurrencesOfString:@"[<> ]" withString:@"" options:NSRegularExpressionSearch range:NSMakeRange(0, imageHashString.length)];
 
     // The URL we want to encrypt is appended by the imageHashString.
-    NSString *urlToEncrypt = [optionsUrlPath stringByAppendingFormat:@"/%@", imageHashString];
+    NSString *urlToEncrypt = [optionsURLPath stringByAppendingFormat:@"/%@", imageHashString];
 
     // Pad it to 16 bytes.
     size_t paddingNeeded = (16 - [urlToEncrypt lengthOfBytesUsingEncoding:NSUTF8StringEncoding] % 16);
@@ -429,7 +400,6 @@ static inline NSMutableData *TUCreateEncryptedAES128Data(NSString *imageURLStrin
     cryptor = NULL;
 
     memset(buffer.mutableBytes, 0, buffer.length);
-    [buffer release];
     
     return result;
 }
