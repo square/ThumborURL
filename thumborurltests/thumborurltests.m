@@ -12,13 +12,15 @@
 
 @implementation thumborurltests
 
-- (void)testSimpleURL;
+- (void)testSimpleURLAES;
 {
     TUOptions *opts = [[TUOptions alloc] init];
     
     NSURL *imageURL = [NSURL URLWithString:@"http://twitter.com/foo.png"];
     NSURL *baseURL = [NSURL URLWithString:@"http://images.example.com"];
     NSString *key = @"omg152";
+
+    opts.encryption = TUEncryptionModeAES128;
     
     NSURL *u = [NSURL TU_secureURLWithOptions:opts imageURL:imageURL baseURL:baseURL securityKey:key];
     NSString *expectedURL = @"/qcQJp6JpxvDT799fxzjPYxt9A0ooZSeV_NOo-nC0-GN5kvKkWcTfpqwLE5PgFouD/http://twitter.com/foo.png";
@@ -26,7 +28,7 @@
     STAssertEqualObjects(expectedURL, u.relativeString, @"Should work");
 }
 
-- (void)testOpts;
+- (void)testOptsAES;
 {
     TUOptions *opts = [[TUOptions alloc] init];
     
@@ -38,6 +40,7 @@
     opts.smart = YES;
     opts.fitIn = TUFitInNormal;
     opts.vflip = YES;
+    opts.encryption = TUEncryptionModeAES128;
     
     NSURL *u = [NSURL TU_secureURLWithOptions:opts imageURL:imageURL baseURL:baseURL securityKey:key];
     NSString *expectedURL = @"/VN-DQqsh6mSk4bb6biPlIj-IHwbA2IGyC7bPtNuPS4RvyMFh4I76UuuV6dNIjG9fV6FDVsTGF5sD23qD7sMwEg==/http://twitter.com/foo.png";
@@ -45,7 +48,7 @@
     STAssertEqualObjects(expectedURL, u.relativeString, @"Should be equal to command line generated version");
 }
 
-- (void)testScale;
+- (void)testScaleAES;
 {
     TUOptions *opts = [[TUOptions alloc] init];
     
@@ -58,6 +61,7 @@
     opts.fitIn = TUFitInNormal;
     opts.vflip = YES;
     opts.scale = 2.0f;
+    opts.encryption = TUEncryptionModeAES128;
     
     NSURL *u = [NSURL TU_secureURLWithOptions:opts imageURL:imageURL baseURL:baseURL securityKey:key];
     NSString *expectedURL = @"/VN-DQqsh6mSk4bb6biPlIj-IHwbA2IGyC7bPtNuPS4RvyMFh4I76UuuV6dNIjG9fV6FDVsTGF5sD23qD7sMwEg==/http://twitter.com/foo.png";
@@ -65,7 +69,7 @@
     STAssertEqualObjects(expectedURL, u.relativeString, @"Should be equal to command line generated version");
 }
 
-- (void)testCopy;
+- (void)testCopyAES;
 {
     TUOptions *opts = [[TUOptions alloc] init];
     
@@ -78,6 +82,7 @@
     opts.fitIn = TUFitInNormal;
     opts.vflip = YES;
     opts.scale = 2.0f;
+    opts.encryption = TUEncryptionModeAES128;
     
     TUOptions *newOpts = [opts copy];
     
@@ -91,7 +96,7 @@
     STAssertEqualObjects(expectedURL, u.relativeString, @"Should be equal to command line generated version");
 }
 
-- (void)testFilters;
+- (void)testFiltersAES;
 {
     TUOptions *opts = [[TUOptions alloc] init];
     
@@ -104,11 +109,46 @@
     [filters addObject:[TUFilter filterWithName:@"watermark" arguments:@"baz.png", @"4", @"8", @"15", nil]];
     
     opts.filters = filters;
+    opts.encryption = TUEncryptionModeAES128;
 
     NSURL *u = [NSURL TU_secureURLWithOptions:opts imageURL:imageURL baseURL:baseURL securityKey:key];
     NSString *expectedURL = @"/ntizt-ZKGa7YNJLoTH7ie6wGXkyJxdzrcqOrtGvhyMQI12qTMRWYGqAki7QTt6miJKiCzgSScrlxGoN_U7tbp_3TNgOmlJUfeoXtwnxQ26RxMT6HzFjuLShitTZ4u015/http://twitter.com/foo.png";
     
     STAssertEqualObjects(expectedURL, u.relativeString, @"Should be equal to command line generated version");    
+}
+
+- (void)testSimpleURLHMAC;
+{
+    TUOptions *opts = [[TUOptions alloc] init];
+
+    NSURL *imageURL = [NSURL URLWithString:@"twitter.com/foo.png"];
+    NSURL *baseURL = [NSURL URLWithString:@"http://images.example.com"];
+    NSString *key = @"omg152";
+
+    NSURL *u = [NSURL TU_secureURLWithOptions:opts imageURL:imageURL baseURL:baseURL securityKey:key];
+    NSString *expectedURL = @"/yfI2JhRv0z312pPzm_vE6U4cURM=/twitter.com/foo.png";
+
+    STAssertEqualObjects(expectedURL, u.relativeString, @"Should work");
+}
+
+- (void)testOptsHMAC;
+{
+    TUOptions *opts = [[TUOptions alloc] init];
+
+    NSURL *imageURL = [NSURL URLWithString:@"twitter.com/foo.png"];
+    NSURL *baseURL = [NSURL URLWithString:@"http://images.example.com"];
+    NSString *key = @"omg152";
+
+    opts.crop = CGRectMake(20, 20, 20, 20);
+    opts.smart = YES;
+    opts.targetSize = CGSizeMake(10, 10);
+    opts.fitIn = TUFitInNormal;
+    opts.vflip = YES;
+
+    NSURL *u = [NSURL TU_secureURLWithOptions:opts imageURL:imageURL baseURL:baseURL securityKey:key];
+    NSString *expectedURL = @"/aOH7-AuI2kyIb4d9TLbcBdDlGwk=/20x20:40x40/fit-in/10x-10/smart/twitter.com/foo.png";
+
+    STAssertEqualObjects(expectedURL, u.relativeString, @"Should be equal to command line generated version");
 }
 
 @end
