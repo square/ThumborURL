@@ -297,7 +297,7 @@ static inline NSData *TUCreateEncryptedHMACSHA1Data(NSString *imageURLString, NS
         case TUEncryptionModeHMACSHA1:
         default: {
             NSString *trimmedString = [imageURLString stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"/"]];
-            suffix = [options.URLOptionsPath stringByAppendingPathComponent:trimmedString];
+            suffix = [NSString stringWithFormat:@"%@/%@", options.URLOptionsPath, trimmedString];
             result = TUCreateEncryptedHMACSHA1Data(suffix, securityKey);
             break;
         }
