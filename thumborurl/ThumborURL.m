@@ -296,6 +296,9 @@ static inline NSData *TUCreateEncryptedHMACSHA1Data(NSString *imageURLString, NS
 
         case TUEncryptionModeHMACSHA1:
         default: {
+			// It is important not to generate the URL by using stringByAppendingPathComponent because the trimmedString is not
+			// a filesystem path component. As such, http://lol gets turned into http:/lol by the API which 
+			// Thumbor will then reject causing all images in our app which use Thumbor to stop loading :)
             NSString *trimmedString = [imageURLString stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"/"]];
             suffix = [NSString stringWithFormat:@"%@/%@", options.URLOptionsPath, trimmedString];
             result = TUCreateEncryptedHMACSHA1Data(suffix, securityKey);
