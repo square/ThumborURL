@@ -303,7 +303,7 @@ static inline NSData *TUCreateEncryptedHMACSHA1Data(NSString *imageURLString, NS
             NSString *optionsString = options.URLOptionsPath;
             
             if (optionsString.length) {
-                suffix = [NSString stringWithFormat:@"%@/%@", options.URLOptionsPath, trimmedString];
+                suffix = [NSString stringWithFormat:@"%@/%@", optionsString, trimmedString];
             } else {
                 suffix = trimmedString;
             }
