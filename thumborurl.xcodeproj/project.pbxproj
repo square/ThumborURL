@@ -188,7 +188,7 @@
 		F69614EC153C933E00AC1F5C /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0460;
+				LastUpgradeCheck = 0500;
 			};
 			buildConfigurationList = F69614EF153C933E00AC1F5C /* Build configuration list for PBXProject "thumborurl" */;
 			compatibilityVersion = "Xcode 3.2";
