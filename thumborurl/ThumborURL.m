@@ -6,6 +6,8 @@
 //  Copyright (c) 2012 Square, Inc. All rights reserved.
 //
 
+#import <objc/runtime.h>
+
 #import "ThumborURL.h"
 #import "base64urlsafe.h"
 
@@ -273,6 +275,8 @@ static inline NSData *TUCreateEncryptedHMACSHA1Data(NSString *imageURLString, NS
 
 @implementation NSURL (ThumborURL)
 
+static NSString *const TUIsThumborizedURLKey = @"TUIsThumborizedURL";
+
 + (id)TU_secureURLWithOptions:(TUOptions *)options imageURL:(NSURL *)imageURL baseURL:(NSURL *)baseURL securityKey:(NSString *)securityKey;
 {
     assert(securityKey.length > 0);
@@ -321,8 +325,20 @@ static inline NSData *TUCreateEncryptedHMACSHA1Data(NSString *imageURLString, NS
     NSString *encodedString = [[NSString alloc] initWithData:secureURL encoding:NSUTF8StringEncoding];
     NSString *finalURL = [NSString stringWithFormat:@"/%@/%@", encodedString, suffix];
 
-    // Make it relative to the base URL.
-    return [NSURL URLWithString:finalURL relativeToURL:baseURL];
+    NSURL *URL = [NSURL URLWithString:finalURL relativeToURL:baseURL];
+
+    objc_setAssociatedObject(URL, (__bridge void *)TUIsThumborizedURLKey, @YES, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+
+    return URL;
+}
+
+#pragma mark - Properties
+
+- (BOOL)isThumborizedURL;
+{
+    const NSNumber *isThumborizedURL = objc_getAssociatedObject(self, (__bridge void *)TUIsThumborizedURLKey);
+
+    return isThumborizedURL.boolValue;
 }
 
 @end

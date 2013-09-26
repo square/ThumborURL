@@ -107,4 +107,6 @@ typedef NSUInteger TUEncryptionMode;
 
 + (id)TU_secureURLWithOptions:(TUOptions *)options imageURL:(NSURL *)imageURL baseURL:(NSURL *)baseURL securityKey:(NSString *)securityKey;
 
+@property (nonatomic, assign, readonly, getter=isThumborizedURL) BOOL thumborizedURL;
+
 @end
