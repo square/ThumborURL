@@ -70,6 +70,10 @@ static inline NSData *TUCreateEncryptedHMACSHA1Data(NSString *imageURLString, NS
 
 - (NSURL *)secureURLWithImageURL:(NSURL *)imageURL options:(TUOptions *)options securityKey:(NSString *)securityKey;
 {
+    if (!imageURL.thumborizableURL) {
+        return imageURL;
+    }
+    
     NSString *cacheKey = [NSString stringWithFormat:@"%@-%@", imageURL.absoluteString, options.URLOptionsPath];
     NSURL *cachedURL = [self.secureURLCache objectForKey:cacheKey];
     if (cachedURL) {
@@ -333,6 +337,20 @@ static NSString *const TUIsThumborizedURLKey = @"TUIsThumborizedURL";
 }
 
 #pragma mark - Properties
+
+- (BOOL)isThumborizableURL;
+{
+    static NSSet *thumborizableURLSchemes = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        thumborizableURLSchemes = [NSSet setWithArray:@[
+                                                        @"http",
+                                                        @"https",
+                                                        ]];
+    });
+    
+    return [thumborizableURLSchemes containsObject:self.scheme.lowercaseString];
+}
 
 - (BOOL)isThumborizedURL;
 {
