@@ -343,12 +343,13 @@ static NSString *const TUIsThumborizedURLKey = @"TUIsThumborizedURL";
     static NSSet *thumborizableURLSchemes = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        thumborizableURLSchemes = [NSSet setWithArray:@[
-                                                        @"http",
-                                                        @"https",
-                                                        ]];
+        thumborizableURLSchemes = [NSSet setWithObjects:
+                                   @"http",
+                                   @"https",
+                                   nil
+                                   ];
     });
-    
+
     return [thumborizableURLSchemes containsObject:self.scheme.lowercaseString];
 }
 
