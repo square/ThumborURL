@@ -319,9 +319,13 @@ static NSString *const TUIsThumborizedURLKey = @"TUIsThumborizedURL";
             break;
         }
     }
-    
-    // Now we're finished encrypting the url, let's Base64 encode it.
-    NSString *finalURL = [NSString stringWithFormat:@"/%@/%@", result.base64Encoding, suffix];
+
+    // Base 64 encode the data. Replace invalid characters so the URL will be valid. Thumbor expects this replacement.
+    NSMutableString *base64String = [result.base64Encoding mutableCopy];
+    [base64String replaceOccurrencesOfString:@"+" withString:@"-"options:NSLiteralSearch range:NSMakeRange(0, base64String.length)];
+    [base64String replaceOccurrencesOfString:@"/" withString:@"_"options:NSLiteralSearch range:NSMakeRange(0, base64String.length)];
+
+    NSString *finalURL = [NSString stringWithFormat:@"/%@/%@", base64String, suffix];
 
     NSURL *URL = [NSURL URLWithString:finalURL relativeToURL:baseURL];
 
