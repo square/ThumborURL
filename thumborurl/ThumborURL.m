@@ -9,7 +9,6 @@
 #import <objc/runtime.h>
 
 #import "ThumborURL.h"
-#import "base64urlsafe.h"
 
 #import <CommonCrypto/CommonDigest.h>
 #import <CommonCrypto/CommonCryptor.h>
@@ -320,14 +319,9 @@ static NSString *const TUIsThumborizedURLKey = @"TUIsThumborizedURL";
             break;
         }
     }
-
+    
     // Now we're finished encrypting the url, let's Base64 encode it.
-    NSMutableData *secureURL = [NSMutableData dataWithLength:((result.length + 2) * 3 >> 1)];
-    size_t newLength = b64_ntop_urlsafe(result.bytes, result.length, secureURL.mutableBytes, secureURL.length);
-    secureURL.length = newLength;
-
-    NSString *encodedString = [[NSString alloc] initWithData:secureURL encoding:NSUTF8StringEncoding];
-    NSString *finalURL = [NSString stringWithFormat:@"/%@/%@", encodedString, suffix];
+    NSString *finalURL = [NSString stringWithFormat:@"/%@/%@", result.base64Encoding, suffix];
 
     NSURL *URL = [NSURL URLWithString:finalURL relativeToURL:baseURL];
 
