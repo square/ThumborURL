@@ -40,9 +40,9 @@ typedef NS_ENUM(NSUInteger, TUEncryptionMode) {
 };
 
 
-// TUEndpoints represent a thumbor endpoint.
-// An endpoint can either have a global key or a key per image.
-// If no key is specified, a key per image is required.
+/// TUEndpoints represent a thumbor endpoint.
+/// An endpoint can either have a global key or a key per image.
+/// If no key is specified, a key per image is required.
 @interface TUEndpointConfiguration : NSObject
 
 - (id)initWithBaseURL:(NSURL *)baseURL securityKey:(NSString *)securityKey;
@@ -51,13 +51,13 @@ typedef NS_ENUM(NSUInteger, TUEncryptionMode) {
 @property (nonatomic, copy) NSURL *baseURL;
 @property (nonatomic, copy) NSString *globalSecurityKey;
 
-// Generating secure URLs takes some time, so we cache them in memory.
+/// Generating secure URLs takes some time, so we cache them in memory.
 @property (nonatomic, strong, readonly) NSCache *secureURLCache;
 
-// For this method, `globalSecurityKey` must be set
+/// For this method, `globalSecurityKey` must be set
 - (NSURL *)secureURLWithImageURL:(NSURL *)imageURL options:(TUOptions *)options;
 
-// This method can be used with a per-image security key.
+/// This method can be used with a per-image security key.
 - (NSURL *)secureURLWithImageURL:(NSURL *)imageURL options:(TUOptions *)options securityKey:(NSString *)securityKey;
 
 @end
@@ -65,7 +65,7 @@ typedef NS_ENUM(NSUInteger, TUEncryptionMode) {
 
 @interface TUOptions : NSObject <NSCopying>
 
-// Make a copy of options and assign a new size.
+/// Make a copy of options and assign a new size.
 - (TUOptions *)optionsBySettingSize:(CGSize)newSize;
 
 @property (nonatomic, assign) CGSize targetSize;
