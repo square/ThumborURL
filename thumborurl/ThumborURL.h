@@ -3,7 +3,10 @@
 //  thumborurl
 //
 //  Created by Mike Lewis on 4/16/12.
-//  Copyright (c) 2012 Square, Inc. All rights reserved.
+//
+//  Licensed to Square, Inc. under one or more contributor license agreements.
+//  See the LICENSE file distributed with this work for the terms under
+//  which Square, Inc. licenses this file to you.
 //
 
 #import <CoreGraphics/CoreGraphics.h>
@@ -13,32 +16,28 @@
 @class TUOptions;
 
 
-enum {
+typedef NS_ENUM(NSUInteger, TUFitInMode) {
     TUFitInNone = 0,
     TUFitInNormal,
     TUFitInAdaptive
 };
-typedef NSUInteger TUFitInMode;
 
-enum {
+typedef NS_ENUM(NSUInteger, TUVerticalAlignment) {
     TUVerticalAlignMiddle = 0,
     TUVerticalAlignTop,
     TUVerticalAlignBottom,
 };
-typedef NSUInteger TUVerticalAlignment;
 
-enum {
+typedef NS_ENUM(NSUInteger, TUHorizontalAlignment) {
     TUHorizontalAlignCenter = 0,
     TUHorizontalAlignLeft,
     TUHorizontalAlignRight,
 };
-typedef NSUInteger TUHorizontalAlignment;
 
-enum {
+typedef NS_ENUM(NSUInteger, TUEncryptionMode) {
     TUEncryptionModeHMACSHA1 = 0,
     TUEncryptionModeAES128,
 };
-typedef NSUInteger TUEncryptionMode;
 
 
 // TUEndpoints represent a thumbor endpoint.
@@ -55,10 +54,10 @@ typedef NSUInteger TUEncryptionMode;
 // Generating secure URLs takes some time, so we cache them in memory.
 @property (nonatomic, strong, readonly) NSCache *secureURLCache;
 
-// globalSecurityKey must be set
+// For this method, `globalSecurityKey` must be set
 - (NSURL *)secureURLWithImageURL:(NSURL *)imageURL options:(TUOptions *)options;
 
-// This one can be used with a per-image security key.
+// This method can be used with a per-image security key.
 - (NSURL *)secureURLWithImageURL:(NSURL *)imageURL options:(TUOptions *)options securityKey:(NSString *)securityKey;
 
 @end
@@ -67,7 +66,7 @@ typedef NSUInteger TUEncryptionMode;
 @interface TUOptions : NSObject <NSCopying>
 
 // Make a copy of options and assign a new size.
-- (TUOptions *)optionsWithSize:(CGSize)newSize;
+- (TUOptions *)optionsBySettingSize:(CGSize)newSize;
 
 @property (nonatomic, assign) CGSize targetSize;
 @property (nonatomic, assign) BOOL smart;
@@ -108,7 +107,6 @@ typedef NSUInteger TUEncryptionMode;
 + (id)TU_secureURLWithOptions:(TUOptions *)options imageURL:(NSURL *)imageURL baseURL:(NSURL *)baseURL securityKey:(NSString *)securityKey;
 
 @property (nonatomic, assign, readonly, getter=isThumborizableURL) BOOL thumborizableURL;
-
 @property (nonatomic, assign, readonly, getter=isThumborizedURL) BOOL thumborizedURL;
 
 @end
