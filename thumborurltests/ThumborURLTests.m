@@ -9,8 +9,13 @@
 //  which Square, Inc. licenses this file to you.
 //
 
-#import "ThumborURLTests.h"
 #import "ThumborURL.h"
+
+#import <XCTest/XCTest.h>
+
+
+@interface ThumborURLTests : XCTestCase
+@end
 
 
 @implementation ThumborURLTests

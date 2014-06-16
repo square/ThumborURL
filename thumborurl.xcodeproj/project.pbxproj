@@ -37,7 +37,6 @@
 		F6EC7490153CB63C00AF55B4 /* thumborurltests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = thumborurltests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		F6EC7498153CB63C00AF55B4 /* thumborurltests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "thumborurltests-Info.plist"; sourceTree = "<group>"; };
 		F6EC749A153CB63C00AF55B4 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		F6EC749C153CB63C00AF55B4 /* ThumborURLTests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ThumborURLTests.h; sourceTree = "<group>"; };
 		F6EC749D153CB63C00AF55B4 /* ThumborURLTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ThumborURLTests.m; sourceTree = "<group>"; };
 		F6EC749F153CB63C00AF55B4 /* thumborurltests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "thumborurltests-Prefix.pch"; sourceTree = "<group>"; };
 		F6EC74A8153CBB0000AF55B4 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -115,7 +114,6 @@
 		F6EC7496153CB63C00AF55B4 /* thumborurltests */ = {
 			isa = PBXGroup;
 			children = (
-				F6EC749C153CB63C00AF55B4 /* ThumborURLTests.h */,
 				F6EC749D153CB63C00AF55B4 /* ThumborURLTests.m */,
 				F6EC7497153CB63C00AF55B4 /* Supporting Files */,
 			);
