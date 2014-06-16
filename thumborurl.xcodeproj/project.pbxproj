@@ -10,14 +10,23 @@
 		F69614F9153C933E00AC1F5C /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F69614F8153C933E00AC1F5C /* Foundation.framework */; };
 		F696150B153C940000AC1F5C /* ThumborURL.h in Headers */ = {isa = PBXBuildFile; fileRef = F6961509153C940000AC1F5C /* ThumborURL.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F696150C153C940000AC1F5C /* ThumborURL.m in Sources */ = {isa = PBXBuildFile; fileRef = F696150A153C940000AC1F5C /* ThumborURL.m */; };
-		F6EC7492153CB63C00AF55B4 /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6EC7491153CB63C00AF55B4 /* SenTestingKit.framework */; };
 		F6EC7495153CB63C00AF55B4 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F69614F8153C933E00AC1F5C /* Foundation.framework */; };
 		F6EC749B153CB63C00AF55B4 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = F6EC7499153CB63C00AF55B4 /* InfoPlist.strings */; };
-		F6EC749E153CB63C00AF55B4 /* thumborurltests.m in Sources */ = {isa = PBXBuildFile; fileRef = F6EC749D153CB63C00AF55B4 /* thumborurltests.m */; };
+		F6EC749E153CB63C00AF55B4 /* ThumborURLTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F6EC749D153CB63C00AF55B4 /* ThumborURLTests.m */; };
 		F6EC74A5153CB6C400AF55B4 /* libthumborurl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F69614F5153C933E00AC1F5C /* libthumborurl.a */; };
 		F6EC74A9153CBB0000AF55B4 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6EC74A8153CBB0000AF55B4 /* CoreGraphics.framework */; };
 		F6EC74AA153CBB0500AF55B4 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6EC74A8153CBB0000AF55B4 /* CoreGraphics.framework */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		A82915AF194F969400BBBB24 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F69614EC153C933E00AC1F5C /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = F69614F4153C933E00AC1F5C;
+			remoteInfo = thumborurl;
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		F69614F5153C933E00AC1F5C /* libthumborurl.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libthumborurl.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -25,12 +34,10 @@
 		F69614FC153C933E00AC1F5C /* thumborurl-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "thumborurl-Prefix.pch"; sourceTree = "<group>"; };
 		F6961509153C940000AC1F5C /* ThumborURL.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ThumborURL.h; sourceTree = "<group>"; };
 		F696150A153C940000AC1F5C /* ThumborURL.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ThumborURL.m; sourceTree = "<group>"; };
-		F6EC7490153CB63C00AF55B4 /* thumborurltests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = thumborurltests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
-		F6EC7491153CB63C00AF55B4 /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
+		F6EC7490153CB63C00AF55B4 /* thumborurltests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = thumborurltests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		F6EC7498153CB63C00AF55B4 /* thumborurltests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "thumborurltests-Info.plist"; sourceTree = "<group>"; };
 		F6EC749A153CB63C00AF55B4 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		F6EC749C153CB63C00AF55B4 /* thumborurltests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = thumborurltests.h; sourceTree = "<group>"; };
-		F6EC749D153CB63C00AF55B4 /* thumborurltests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = thumborurltests.m; sourceTree = "<group>"; };
+		F6EC749D153CB63C00AF55B4 /* ThumborURLTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ThumborURLTests.m; sourceTree = "<group>"; };
 		F6EC749F153CB63C00AF55B4 /* thumborurltests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "thumborurltests-Prefix.pch"; sourceTree = "<group>"; };
 		F6EC74A8153CBB0000AF55B4 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
@@ -50,7 +57,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				F6EC74A5153CB6C400AF55B4 /* libthumborurl.a in Frameworks */,
-				F6EC7492153CB63C00AF55B4 /* SenTestingKit.framework in Frameworks */,
 				F6EC7495153CB63C00AF55B4 /* Foundation.framework in Frameworks */,
 				F6EC74AA153CBB0500AF55B4 /* CoreGraphics.framework in Frameworks */,
 			);
@@ -73,7 +79,7 @@
 			isa = PBXGroup;
 			children = (
 				F69614F5153C933E00AC1F5C /* libthumborurl.a */,
-				F6EC7490153CB63C00AF55B4 /* thumborurltests.octest */,
+				F6EC7490153CB63C00AF55B4 /* thumborurltests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -83,7 +89,6 @@
 			children = (
 				F6EC74A8153CBB0000AF55B4 /* CoreGraphics.framework */,
 				F69614F8153C933E00AC1F5C /* Foundation.framework */,
-				F6EC7491153CB63C00AF55B4 /* SenTestingKit.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -109,8 +114,7 @@
 		F6EC7496153CB63C00AF55B4 /* thumborurltests */ = {
 			isa = PBXGroup;
 			children = (
-				F6EC749C153CB63C00AF55B4 /* thumborurltests.h */,
-				F6EC749D153CB63C00AF55B4 /* thumborurltests.m */,
+				F6EC749D153CB63C00AF55B4 /* ThumborURLTests.m */,
 				F6EC7497153CB63C00AF55B4 /* Supporting Files */,
 			);
 			path = thumborurltests;
@@ -169,11 +173,12 @@
 			buildRules = (
 			);
 			dependencies = (
+				A82915B0194F969400BBBB24 /* PBXTargetDependency */,
 			);
 			name = thumborurltests;
 			productName = thumborurltests;
-			productReference = F6EC7490153CB63C00AF55B4 /* thumborurltests.octest */;
-			productType = "com.apple.product-type.bundle";
+			productReference = F6EC7490153CB63C00AF55B4 /* thumborurltests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
 
@@ -241,11 +246,19 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F6EC749E153CB63C00AF55B4 /* thumborurltests.m in Sources */,
+				F6EC749E153CB63C00AF55B4 /* ThumborURLTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		A82915B0194F969400BBBB24 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = F69614F4153C933E00AC1F5C /* thumborurl */;
+			targetProxy = A82915AF194F969400BBBB24 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		F6EC7499153CB63C00AF55B4 /* InfoPlist.strings */ = {
@@ -347,7 +360,7 @@
 			buildSettings = {
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(DEVELOPER_LIBRARY_DIR)/Frameworks",
+					"$(inherited)",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "thumborurltests/thumborurltests-Prefix.pch";
@@ -359,7 +372,6 @@
 				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				WRAPPER_EXTENSION = octest;
 			};
 			name = Debug;
 		};
@@ -368,7 +380,7 @@
 			buildSettings = {
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(DEVELOPER_LIBRARY_DIR)/Frameworks",
+					"$(inherited)",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "thumborurltests/thumborurltests-Prefix.pch";
@@ -380,7 +392,6 @@
 				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				WRAPPER_EXTENSION = octest;
 			};
 			name = Release;
 		};

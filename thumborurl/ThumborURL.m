@@ -3,7 +3,10 @@
 //  thumborurl
 //
 //  Created by Mike Lewis on 4/16/12.
-//  Copyright (c) 2012 Square, Inc. All rights reserved.
+//
+//  Licensed to Square, Inc. under one or more contributor license agreements.
+//  See the LICENSE file distributed with this work for the terms under
+//  which Square, Inc. licenses this file to you.
 //
 
 #import <objc/runtime.h>
@@ -15,8 +18,8 @@
 #import <CommonCrypto/CommonHMAC.h>
 
 
-static inline NSString *formatRect(CGRect r);
-static inline NSString *formatSize(CGSize size);
+static inline NSString *TUFormattedStringFromRect(CGRect r);
+static inline NSString *TUFormattedStringFromSize(CGSize size);
 static inline NSData *TUCreateEncryptedAES128Data(NSString *imageURLString, NSString *optionsUrlPath, NSString *securityKey);
 static inline NSData *TUCreateEncryptedHMACSHA1Data(NSString *imageURLString, NSString *securityKey);
 
@@ -182,7 +185,7 @@ static inline NSData *TUCreateEncryptedHMACSHA1Data(NSString *imageURLString, NS
     }
 
     if (!CGRectEqualToRect(_crop, CGRectZero)) {
-        [params addObject:formatRect(_crop)];
+        [params addObject:TUFormattedStringFromRect(_crop)];
     }
 
     switch (_fitIn) {
@@ -211,7 +214,7 @@ static inline NSData *TUCreateEncryptedHMACSHA1Data(NSString *imageURLString, NS
     }
 
     if (!CGSizeEqualToSize(size, CGSizeZero)) {
-        [params addObject:formatSize(size)];
+        [params addObject:TUFormattedStringFromSize(size)];
     }
 
     switch (_halign) {
@@ -266,7 +269,7 @@ static inline NSData *TUCreateEncryptedHMACSHA1Data(NSString *imageURLString, NS
     return [NSString pathWithComponents:self.URLOptions];
 }
 
-- (TUOptions *)optionsWithSize:(CGSize)newSize;
+- (TUOptions *)optionsBySettingSize:(CGSize)newSize;
 {
     TUOptions *newOptions = [self copy];
     newOptions.targetSize = newSize;
@@ -447,12 +450,12 @@ static inline NSData *TUCreateEncryptedAES128Data(NSString *imageURLString, NSSt
     return result;
 }
 
-static inline NSString *formatSize(CGSize size)
+static inline NSString *TUFormattedStringFromSize(CGSize size)
 {
     return [NSString stringWithFormat:@"%dx%d", (NSInteger)size.width, (NSInteger)size.height];
 }
 
-static inline NSString *formatRect(CGRect r)
+static inline NSString *TUFormattedStringFromRect(CGRect r)
 {
     return [NSString stringWithFormat:@"%dx%d:%dx%d",
         (NSInteger)r.origin.x,
