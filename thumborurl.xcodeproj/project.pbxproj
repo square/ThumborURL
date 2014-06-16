@@ -18,6 +18,16 @@
 		F6EC74AA153CBB0500AF55B4 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6EC74A8153CBB0000AF55B4 /* CoreGraphics.framework */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		A82915AF194F969400BBBB24 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F69614EC153C933E00AC1F5C /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = F69614F4153C933E00AC1F5C;
+			remoteInfo = thumborurl;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
 		F69614F5153C933E00AC1F5C /* libthumborurl.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libthumborurl.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		F69614F8153C933E00AC1F5C /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -165,6 +175,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				A82915B0194F969400BBBB24 /* PBXTargetDependency */,
 			);
 			name = thumborurltests;
 			productName = thumborurltests;
@@ -242,6 +253,14 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		A82915B0194F969400BBBB24 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = F69614F4153C933E00AC1F5C /* thumborurl */;
+			targetProxy = A82915AF194F969400BBBB24 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		F6EC7499153CB63C00AF55B4 /* InfoPlist.strings */ = {

@@ -15,7 +15,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "F6EC748F153CB63C00AF55B4"
-               BuildableName = "thumborurltests.octest"
+               BuildableName = "thumborurltests.xctest"
                BlueprintName = "thumborurltests"
                ReferencedContainer = "container:thumborurl.xcodeproj">
             </BuildableReference>
@@ -33,7 +33,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "F6EC748F153CB63C00AF55B4"
-               BuildableName = "thumborurltests.octest"
+               BuildableName = "thumborurltests.xctest"
                BlueprintName = "thumborurltests"
                ReferencedContainer = "container:thumborurl.xcodeproj">
             </BuildableReference>
