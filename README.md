@@ -35,6 +35,8 @@ A library to generate encrypted URLs for [Thumbor](https://github.com/thumbor/th
     opts.targetSize = CGSizeMake(10, 10);
     opts.fitIn = TUFitInNormal;
     opts.vflip = YES;
+    opts.filters = @[[TUFilter filterWithName:@"watermark" arguments:@"blah.png", @"10", @"20", @"30", nil],
+                     [TUFilter filterWithName:@"watermark" arguments:@"baz.png", @"4", @"8", @"15", nil]];
 
     NSURL *u = [NSURL TU_secureURLWithOptions:opts imageURL:imageURL baseURL:baseURL securityKey:key];
     // u is http://images.example.com/aOH7-AuI2kyIb4d9TLbcBdDlGwk=/20x20:40x40/fit-in/10x-10/smart/twitter.com/foo.png
