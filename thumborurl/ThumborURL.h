@@ -71,6 +71,7 @@ typedef NS_ENUM(NSUInteger, TUEncryptionMode) {
 
 @property (nonatomic, assign) CGSize targetSize;
 @property (nonatomic, assign) BOOL smart;
+@property (nonatomic, assign) BOOL trim;
 @property (nonatomic, assign) BOOL debug;
 @property (nonatomic, assign) BOOL meta;
 @property (nonatomic, assign) CGRect crop;
