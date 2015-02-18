@@ -16,7 +16,7 @@ A library to generate encrypted URLs for [Thumbor](https://github.com/thumbor/th
 
 ## Usage
 
-1. Add `https://github.com/square/objc-thumborurl.git` as a submodule of your project
+1. Add `https://github.com/square/ThumborURL.git` as a submodule of your project
 1. Add `thumborurl.xcodeproj` as a subproject of your Xcode project.
 1. Make the `thumborurl` library a dependency of your target.
 1. Link the `thumborurl` library to your target.
