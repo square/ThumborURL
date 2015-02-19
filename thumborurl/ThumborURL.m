@@ -381,7 +381,7 @@ static inline NSData *TUCreateEncryptedAES128Data(NSString *imageURLString, NSSt
     // MD5 the imageURLString.
     NSData *imageURLStringData = [imageURLString dataUsingEncoding:NSUTF8StringEncoding];
     NSMutableData *imageHash = [NSMutableData dataWithLength:CC_MD5_DIGEST_LENGTH];
-    CC_MD5(imageURLStringData.bytes, imageURLStringData.length, imageHash.mutableBytes);
+    CC_MD5(imageURLStringData.bytes, (CC_LONG)imageURLStringData.length, imageHash.mutableBytes);
 
     NSString *imageHashString = [imageHash description];
     imageHashString = [imageHashString stringByReplacingOccurrencesOfString:@"[<> ]" withString:@"" options:NSRegularExpressionSearch range:NSMakeRange(0, imageHashString.length)];
@@ -452,15 +452,15 @@ static inline NSData *TUCreateEncryptedAES128Data(NSString *imageURLString, NSSt
 
 static inline NSString *TUFormattedStringFromSize(CGSize size)
 {
-    return [NSString stringWithFormat:@"%dx%d", (NSInteger)size.width, (NSInteger)size.height];
+    return [NSString stringWithFormat:@"%@x%@", @(size.width), @(size.height)];
 }
 
 static inline NSString *TUFormattedStringFromRect(CGRect r)
 {
-    return [NSString stringWithFormat:@"%dx%d:%dx%d",
-        (NSInteger)r.origin.x,
-        (NSInteger)r.origin.y,
-        (NSInteger)(r.origin.x + r.size.width),
-        (NSInteger)(r.origin.y + r.size.height)
+    return [NSString stringWithFormat:@"%@x%@:%@x%@",
+        @(r.origin.x),
+        @(r.origin.y),
+        @(r.origin.x + r.size.width),
+        @(r.origin.y + r.size.height)
     ];
 }
