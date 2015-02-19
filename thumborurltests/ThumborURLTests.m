@@ -159,4 +159,20 @@
     XCTAssertEqualObjects(expectedURL, u.relativeString, @"Should be equal to command line generated version");
 }
 
+- (void)testSizeTruncatesDecimals;
+{
+    TUOptions *opts = [[TUOptions alloc] init];
+    
+    NSURL *imageURL = [NSURL URLWithString:@"http://twitter.com/foo.png"];
+    NSURL *baseURL = [NSURL URLWithString:@"http://images.example.com"];
+    NSString *key = @"omg152";
+    
+    // Thumbor only supports integer sizes, so these floats should be truncated to 10x10 in the final URL.
+    NSURL *urlFromDecimalSize = [NSURL TU_secureURLWithOptions:[opts optionsBySettingSize:CGSizeMake(10.25f, 10.75f)] imageURL:imageURL baseURL:baseURL securityKey:key];
+    NSURL *urlFromIntegerSize = [NSURL TU_secureURLWithOptions:[opts optionsBySettingSize:CGSizeMake(10, 10)] imageURL:imageURL baseURL:baseURL securityKey:key];
+    
+    XCTAssertEqualObjects(urlFromDecimalSize, urlFromIntegerSize, @"Should be equal due to decimal truncation");
+}
+
+
 @end

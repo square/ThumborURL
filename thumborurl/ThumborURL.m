@@ -452,15 +452,15 @@ static inline NSData *TUCreateEncryptedAES128Data(NSString *imageURLString, NSSt
 
 static inline NSString *TUFormattedStringFromSize(CGSize size)
 {
-    return [NSString stringWithFormat:@"%@x%@", @(size.width), @(size.height)];
+    return [NSString stringWithFormat:@"%ldx%ld", (long)size.width, (long)size.height];
 }
 
 static inline NSString *TUFormattedStringFromRect(CGRect r)
 {
-    return [NSString stringWithFormat:@"%@x%@:%@x%@",
-        @(r.origin.x),
-        @(r.origin.y),
-        @(r.origin.x + r.size.width),
-        @(r.origin.y + r.size.height)
+    return [NSString stringWithFormat:@"%ldx%ld:%ldx%ld",
+        (long)r.origin.x,
+        (long)r.origin.y,
+        (long)(r.origin.x + r.size.width),
+        (long)(r.origin.y + r.size.height)
     ];
 }
