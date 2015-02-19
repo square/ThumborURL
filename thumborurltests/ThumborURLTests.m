@@ -112,11 +112,9 @@
     NSURL *baseURL = [NSURL URLWithString:@"http://images.example.com"];
     NSString *key = @"omg152";
     
-    NSMutableArray *filters = [[NSMutableArray alloc] init];
-    [filters addObject:[TUFilter filterWithName:@"watermark" arguments:@"blah.png", @"10", @"20", @"30", nil]];
-    [filters addObject:[TUFilter filterWithName:@"watermark" arguments:@"baz.png", @"4", @"8", @"15", nil]];
     
-    opts.filters = filters;
+    opts.filters = @[[TUFilter filterWithName:@"watermark" arguments:@"blah.png", @"10", @"20", @"30", nil],
+                     [TUFilter filterWithName:@"watermark" arguments:@"baz.png", @"4", @"8", @"15", nil]];
     opts.encryption = TUEncryptionModeAES128;
 
     NSURL *u = [NSURL TU_secureURLWithOptions:opts imageURL:imageURL baseURL:baseURL securityKey:key];
