@@ -31,7 +31,6 @@
 /* Begin PBXFileReference section */
 		F69614F5153C933E00AC1F5C /* libthumborurl.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libthumborurl.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		F69614F8153C933E00AC1F5C /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
-		F69614FC153C933E00AC1F5C /* thumborurl-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "thumborurl-Prefix.pch"; sourceTree = "<group>"; };
 		F6961509153C940000AC1F5C /* ThumborURL.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ThumborURL.h; sourceTree = "<group>"; };
 		F696150A153C940000AC1F5C /* ThumborURL.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ThumborURL.m; sourceTree = "<group>"; };
 		F6EC7490153CB63C00AF55B4 /* thumborurltests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = thumborurltests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -96,19 +95,10 @@
 		F69614FA153C933E00AC1F5C /* thumborurl */ = {
 			isa = PBXGroup;
 			children = (
-				F69614FB153C933E00AC1F5C /* Supporting Files */,
 				F6961509153C940000AC1F5C /* ThumborURL.h */,
 				F696150A153C940000AC1F5C /* ThumborURL.m */,
 			);
 			path = thumborurl;
-			sourceTree = "<group>";
-		};
-		F69614FB153C933E00AC1F5C /* Supporting Files */ = {
-			isa = PBXGroup;
-			children = (
-				F69614FC153C933E00AC1F5C /* thumborurl-Prefix.pch */,
-			);
-			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
 		F6EC7496153CB63C00AF55B4 /* thumborurltests */ = {
@@ -324,8 +314,6 @@
 			buildSettings = {
 				CLANG_ENABLE_OBJC_ARC = YES;
 				DSTROOT = /tmp/thumborurl.dst;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "thumborurl/thumborurl-Prefix.pch";
 				GCC_THUMB_SUPPORT = NO;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -341,8 +329,6 @@
 			buildSettings = {
 				CLANG_ENABLE_OBJC_ARC = YES;
 				DSTROOT = /tmp/thumborurl.dst;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "thumborurl/thumborurl-Prefix.pch";
 				GCC_THUMB_SUPPORT = NO;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",

@@ -1,7 +1,0 @@
-//
-// Prefix header for all source files of the 'thumborurl' target in the 'thumborurl' project
-//
-
-#ifdef __OBJC__
-    #import <Foundation/Foundation.h>
-#endif
