@@ -66,7 +66,7 @@ static inline NSData *TUCreateEncryptedHMACSHA1Data(NSString *imageURLString, NS
 
 - (NSURL *)secureURLWithImageURL:(NSURL *)imageURL options:(TUOptions *)options;
 {
-    NSAssert(self.globalSecurityKey, @"globalSecurityKey required for calling %@", NSStringFromSelector( _cmd));
+    NSAssert(self.globalSecurityKey, @"globalSecurityKey required");
     return [self secureURLWithImageURL:imageURL options:options securityKey:self.globalSecurityKey];
 }
 
@@ -285,7 +285,7 @@ static NSString *const TUIsThumborizedURLKey = @"TUIsThumborizedURL";
 
 + (id)TU_secureURLWithOptions:(TUOptions *)options imageURL:(NSURL *)imageURL baseURL:(NSURL *)baseURL securityKey:(NSString *)securityKey;
 {
-    assert(securityKey.length > 0);
+    NSAssert(securityKey.length > 0, @"securityKey required");
 
     // Remove the query from calculating the hash.
     NSString *imageURLString = imageURL.absoluteString;
@@ -393,7 +393,7 @@ static inline NSData *TUCreateEncryptedAES128Data(NSString *imageURLString, NSSt
     size_t paddingNeeded = (16 - [urlToEncrypt lengthOfBytesUsingEncoding:NSUTF8StringEncoding] % 16);
     urlToEncrypt = [urlToEncrypt stringByPaddingToLength:urlToEncrypt.length + paddingNeeded withString:@"{" startingAtIndex:0];
 
-    assert(urlToEncrypt.length % 16 == 0);
+    NSCAssert(urlToEncrypt.length % 16 == 0, @"Expected urlToencrypt to be evenly divisible by 16. Instead was off by %@", @(urlToEncrypt.length % 16));
 
     // Now we have the URL we want to encrypt.
     NSData *dataToEncrypt = [urlToEncrypt dataUsingEncoding:NSUTF8StringEncoding];
@@ -404,8 +404,8 @@ static inline NSData *TUCreateEncryptedAES128Data(NSString *imageURLString, NSSt
     NSString *paddedSecurityKey = [securityKey stringByPaddingToLength:16 withString:securityKey startingAtIndex:0];
     NSData *key = [paddedSecurityKey dataUsingEncoding:NSUTF8StringEncoding];
 
-    assert(paddedSecurityKey.length == keySize);
-    assert(key.length == keySize);
+    NSCAssert(paddedSecurityKey.length == keySize, @"Expected paddedSecurityKey to have length kCCKeySizeAES128. Instead was %@", @(paddedSecurityKey.length));
+    NSCAssert(key.length == keySize, @"");
 
     // Make the buffer twice the length.
     NSMutableData *buffer = [[NSMutableData alloc] initWithLength:2048];
@@ -423,8 +423,8 @@ static inline NSData *TUCreateEncryptedAES128Data(NSString *imageURLString, NSSt
                                                      &cryptor,
                                                      &dataUsed);
 
-    assert(status == kCCSuccess);
-    assert(cryptor);
+    NSCAssert(status == kCCSuccess, @"Expected kCCSuccess. Instead got %@", @(status));
+    NSCAssert(cryptor, @"Expected non-NULL cryptor");
 
     size_t bytesNeeded = CCCryptorGetOutputLength(cryptor, dataToEncrypt.length, YES);
 
@@ -433,14 +433,14 @@ static inline NSData *TUCreateEncryptedAES128Data(NSString *imageURLString, NSSt
     size_t currentOffset = 0;
     size_t dataMoved = 0;
     status = CCCryptorUpdate(cryptor, dataToEncrypt.bytes, dataToEncrypt.length, result.mutableBytes, result.length, &dataMoved);
-    assert(status == kCCSuccess);
+    NSCAssert(status == kCCSuccess, @"Expected kCCSuccess. Instead got %@", @(status));
 
     currentOffset += dataMoved;
 
     CCCryptorFinal(cryptor, result.mutableBytes + currentOffset, result.length - currentOffset, &dataMoved);
 
     currentOffset += dataMoved;
-    assert(currentOffset == result.length);
+    NSCAssert(currentOffset == result.length, @"Expected currentOffset to be length of result.");
 
     CCCryptorRelease(cryptor);
     cryptor = NULL;
