@@ -1,5 +1,5 @@
 # ThumborURL
-[![CI Status](https://api.travis-ci.org/square/ThumborURL.svg?branch=master)](https://travis-ci.org/square/thumborurl)
+[![CI Status](https://api.travis-ci.org/square/ThumborURL.svg?branch=master)](https://travis-ci.org/square/ThumborURL)
 
 A library to generate encrypted URLs for [Thumbor](https://github.com/thumbor/thumbor) in your iOS app.
 
