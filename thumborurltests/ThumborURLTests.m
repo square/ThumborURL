@@ -157,6 +157,7 @@
     XCTAssertEqualObjects(expectedURL, u.relativeString, @"Should be equal to command line generated version");
 }
 
+
 - (void)testSizeTruncatesDecimals;
 {
     TUOptions *opts = [[TUOptions alloc] init];
@@ -170,6 +171,27 @@
     NSURL *urlFromIntegerSize = [NSURL TU_secureURLWithOptions:[opts optionsBySettingSize:CGSizeMake(10, 10)] imageURL:imageURL baseURL:baseURL securityKey:key];
     
     XCTAssertEqualObjects(urlFromDecimalSize, urlFromIntegerSize, @"Should be equal due to decimal truncation");
+}
+
+- (void)testOptsTrim;
+{
+    TUOptions *opts = [[TUOptions alloc] init];
+    
+    NSURL *imageURL = [NSURL URLWithString:@"twitter.com/foo.png"];
+    NSURL *baseURL = [NSURL URLWithString:@"http://images.example.com"];
+    NSString *key = @"omg152";
+    
+    opts.crop = CGRectMake(20, 20, 20, 20);
+    opts.trim = YES;
+    opts.smart = YES;
+    opts.targetSize = CGSizeMake(10, 10);
+    opts.fitIn = TUFitInNormal;
+    opts.vflip = YES;
+    
+    NSURL *u = [NSURL TU_secureURLWithOptions:opts imageURL:imageURL baseURL:baseURL securityKey:key];
+    NSString *expectedURL = @"/BmpHlSr72S8Xee7wZ-LCsENOu8Y=/trim/20x20:40x40/fit-in/10x-10/smart/twitter.com/foo.png";
+    
+    XCTAssertEqualObjects(expectedURL, u.relativeString, @"Should be equal to command line generated version");
 }
 
 

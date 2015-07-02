@@ -13,6 +13,7 @@ A library to generate encrypted URLs for [Thumbor](https://github.com/thumbor/th
 	* Scale
 	* Flipping
 	* Detection
+	* Trim
 * Performs quickly
 
 ## Usage

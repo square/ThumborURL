@@ -144,6 +144,7 @@ static inline NSData *TUCreateEncryptedHMACSHA1Data(NSString *imageURLString, NS
     
     dispatch_once(&onceToken, ^{
         keys = @[
+            @"trim",
             @"targetSize",
             @"smart",
             @"debug",
@@ -182,6 +183,10 @@ static inline NSData *TUCreateEncryptedHMACSHA1Data(NSString *imageURLString, NS
 
     if (_meta) {
         [params addObject:@"meta"];
+    }
+    
+    if (_trim) {
+        [params addObject:@"trim"];
     }
 
     if (!CGRectEqualToRect(_crop, CGRectZero)) {
