@@ -329,7 +329,16 @@ static NSString *const TUIsThumborizedURLKey = @"TUIsThumborizedURL";
     }
 
     // Base 64 encode the data. Replace invalid characters so the URL will be valid. Thumbor expects this replacement.
-    NSMutableString *base64String = [result.base64Encoding mutableCopy];
+    NSMutableString *base64String = nil;
+    if ([result respondsToSelector:@selector(base64EncodedStringWithOptions:)]) {
+        base64String = [[result base64EncodedStringWithOptions:0] mutableCopy];
+    } else {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+        base64String = [result.base64Encoding mutableCopy];
+#pragma clang diagnostic pop
+    }
+    
     [base64String replaceOccurrencesOfString:@"+" withString:@"-"options:NSLiteralSearch range:NSMakeRange(0, base64String.length)];
     [base64String replaceOccurrencesOfString:@"/" withString:@"_"options:NSLiteralSearch range:NSMakeRange(0, base64String.length)];
 
