@@ -412,14 +412,12 @@ static inline NSData *TUCreateEncryptedAES128Data(NSString *imageURLString, NSSt
     // Now we have the URL we want to encrypt.
     NSData *dataToEncrypt = [urlToEncrypt dataUsingEncoding:NSUTF8StringEncoding];
 
-    const size_t keySize = kCCKeySizeAES128;
-
     // Pad the key to 16 bytes.
     NSString *paddedSecurityKey = [securityKey stringByPaddingToLength:16 withString:securityKey startingAtIndex:0];
     NSData *key = [paddedSecurityKey dataUsingEncoding:NSUTF8StringEncoding];
 
-    NSCAssert(paddedSecurityKey.length == keySize, @"Expected paddedSecurityKey to have length kCCKeySizeAES128. Instead was %@", @(paddedSecurityKey.length));
-    NSCAssert(key.length == keySize, @"");
+    NSCAssert(paddedSecurityKey.length == kCCKeySizeAES128, @"Expected paddedSecurityKey to have length kCCKeySizeAES128. Instead was %@", @(paddedSecurityKey.length));
+    NSCAssert(key.length == kCCKeySizeAES128, @"");
 
     // Make the buffer twice the length.
     NSMutableData *buffer = [[NSMutableData alloc] initWithLength:2048];
