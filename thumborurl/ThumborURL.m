@@ -202,6 +202,10 @@ static inline NSData *TUCreateEncryptedHMACSHA1Data(NSString *imageURLString, NS
             [params addObject:@"fit-in"];
             break;
             
+        case TUFitInFull:
+            [params addObject:@"full-fit-in"];
+            break;
+            
         case TUFitInNone:
             // Do nothing.
             break;
