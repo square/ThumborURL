@@ -157,6 +157,25 @@
     XCTAssertEqualObjects(expectedURL, u.relativeString, @"Should be equal to command line generated version");
 }
 
+- (void)testFitInFull;
+{
+    TUOptions *opts = [[TUOptions alloc] init];
+    
+    NSURL *imageURL = [NSURL URLWithString:@"twitter.com/foo.png"];
+    NSURL *baseURL = [NSURL URLWithString:@"http://images.example.com"];
+    NSString *key = @"omg152";
+    
+    opts.crop = CGRectMake(20, 20, 20, 20);
+    opts.smart = YES;
+    opts.targetSize = CGSizeMake(10, 10);
+    opts.fitIn = TUFitInFull;
+    opts.vflip = YES;
+    
+    NSURL *u = [NSURL TU_secureURLWithOptions:opts imageURL:imageURL baseURL:baseURL securityKey:key];
+    NSString *expectedURL = @"/pe1aHRMVLSs-f9lZd9o0RVjhEUY=/20x20:40x40/full-fit-in/10x-10/smart/twitter.com/foo.png";
+    
+    XCTAssertEqualObjects(expectedURL, u.relativeString, @"Should be equal to command line generated version");
+}
 
 - (void)testSizeTruncatesDecimals;
 {

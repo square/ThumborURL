@@ -20,7 +20,8 @@
 typedef NS_ENUM(NSUInteger, TUFitInMode) {
     TUFitInNone = 0,
     TUFitInNormal,
-    TUFitInAdaptive
+    TUFitInAdaptive,
+    TUFitInFull
 };
 
 typedef NS_ENUM(NSUInteger, TUVerticalAlignment) {
