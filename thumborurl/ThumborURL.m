@@ -301,8 +301,10 @@ static NSString *const TUIsThumborizedURLKey = @"TUIsThumborizedURL";
     // If there is a query, then percent escape it
     NSString *queryURLString = imageURL.query;
     if (queryURLString != nil) {
+        NSString *imageURLStringWithoutQuery = [imageURLString substringToIndex:imageURLString.length - (queryURLString.length + 1)];
+        queryURLString = [imageURL.absoluteString substringFromIndex:imageURL.absoluteString.length - (queryURLString.length + 1)];
         queryURLString = [queryURLString stringByAddingPercentEncodingWithAllowedCharacters:NSCharacterSet.URLHostAllowedCharacterSet];
-        imageURLString = [[imageURLString substringToIndex:imageURLString.length - (queryURLString.length + 1)] stringByAppendingString:queryURLString];
+        imageURLString = [imageURLStringWithoutQuery stringByAppendingString:queryURLString];
     }
 
     // Encrypt URL based declared encryption scheme.
