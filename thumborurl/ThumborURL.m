@@ -296,8 +296,14 @@ static NSString *const TUIsThumborizedURLKey = @"TUIsThumborizedURL";
 {
     NSAssert(securityKey.length > 0, @"securityKey required");
 
-    // Remove the query from calculating the hash.
-    NSString *imageURLString = [imageURL.absoluteString stringByAddingPercentEncodingWithAllowedCharacters:NSCharacterSet.URLHostAllowedCharacterSet];
+    NSString *imageURLString = imageURL.absoluteString;
+
+    // If there is a query, then percent escape it
+    NSString *queryURLString = imageURL.query;
+    if (queryURLString != nil) {
+        queryURLString = [queryURLString stringByAddingPercentEncodingWithAllowedCharacters:NSCharacterSet.URLHostAllowedCharacterSet];
+        imageURLString = [[imageURLString substringToIndex:imageURLString.length - (queryURLString.length + 1)] stringByAppendingString:queryURLString];
+    }
 
     // Encrypt URL based declared encryption scheme.
     NSString *suffix = nil;
