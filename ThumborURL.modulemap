@@ -1,0 +1,5 @@
+module ThumborURL {
+  header "ThumborURL.h"
+
+  export *
+}
