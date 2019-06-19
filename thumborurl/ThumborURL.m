@@ -373,11 +373,18 @@ static NSString *const TUIsThumborizedURLKey = @"TUIsThumborizedURL";
 
 #pragma mark - Private Methods
 
+/*
+ Thumbor uses Python's `quote()` and `unquote()` functions from `urllib` for encoding/decoding URIs. The documentation
+ for those functions at <https://docs.python.org/3/library/urllib.parse.html#urllib.parse.quote> indicates the reserved
+ characters are: _ . - ~ /
+
+ This behavior was verified as correct by inputting various URLs into the `thumbor-url` command-line tool.
+ */
 - (nullable NSString *)_encodedURIString;
 {
     NSMutableCharacterSet *const allowedCharacters = [NSMutableCharacterSet alphanumericCharacterSet];
 
-    NSString *const unreservedCharacters = @"-._";
+    NSString *const unreservedCharacters = @"_.-~/";
     [allowedCharacters addCharactersInString:unreservedCharacters];
 
     return [self.absoluteString stringByAddingPercentEncodingWithAllowedCharacters:allowedCharacters];
