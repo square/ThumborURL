@@ -47,8 +47,8 @@ typedef NS_ENUM(NSUInteger, TUEncryptionMode) {
 /// If no key is specified, a key per image is required.
 @interface TUEndpointConfiguration : NSObject
 
-- (id)initWithBaseURL:(NSURL *)baseURL securityKey:(NSString *)securityKey;
-- (id)initWithBaseURL:(NSURL *)baseURL;
+- (instancetype)initWithBaseURL:(NSURL *)baseURL securityKey:(NSString *)securityKey;
+- (instancetype)initWithBaseURL:(NSURL *)baseURL;
 
 @property (nonatomic, copy) NSURL *baseURL;
 @property (nonatomic, copy) NSString *globalSecurityKey;
@@ -85,7 +85,7 @@ typedef NS_ENUM(NSUInteger, TUEncryptionMode) {
 @property (nonatomic, assign) BOOL vflip;
 @property (nonatomic, assign) BOOL hflip;
 
-@property (nonatomic, copy) NSArray *filters;
+@property (nonatomic, copy) NSArray<TUFilter *> *filters;
 
 @property (nonatomic, assign) CGFloat scale;
 
@@ -99,15 +99,15 @@ typedef NS_ENUM(NSUInteger, TUEncryptionMode) {
 @property (nonatomic, copy) NSString *name;
 @property (nonatomic, copy) NSArray *arguments;
 
-+ (id)filterWithName:(NSString *)name argumentsArray:(NSArray *)arguments;
-+ (id)filterWithName:(NSString *)name arguments:(id)firstArg, ... NS_REQUIRES_NIL_TERMINATION;
++ (instancetype)filterWithName:(NSString *)name argumentsArray:(NSArray *)arguments;
++ (instancetype)filterWithName:(NSString *)name arguments:(id)firstArg, ... NS_REQUIRES_NIL_TERMINATION;
 
 @end
 
 
 @interface NSURL (ThumborURL)
 
-+ (id)TU_secureURLWithOptions:(TUOptions *)options imageURL:(NSURL *)imageURL baseURL:(NSURL *)baseURL securityKey:(NSString *)securityKey;
++ (instancetype)TU_secureURLWithOptions:(TUOptions *)options imageURL:(NSURL *)imageURL baseURL:(NSURL *)baseURL securityKey:(NSString *)securityKey;
 
 @property (nonatomic, assign, readonly, getter=isThumborizableURL) BOOL thumborizableURL;
 @property (nonatomic, assign, readonly, getter=isThumborizedURL) BOOL thumborizedURL;
