@@ -292,17 +292,13 @@ static inline NSData *TUCreateEncryptedHMACSHA1Data(NSString *imageURLString, NS
 
 static NSString *const TUIsThumborizedURLKey = @"TUIsThumborizedURL";
 
+#pragma mark - Class Methods
+
 + (id)TU_secureURLWithOptions:(TUOptions *)options imageURL:(NSURL *)imageURL baseURL:(NSURL *)baseURL securityKey:(NSString *)securityKey;
 {
     NSAssert(securityKey.length > 0, @"securityKey required");
 
-    // Remove the query from calculating the hash.
-    NSString *imageURLString = imageURL.absoluteString;
-
-    NSString *query = imageURL.query;
-    if (query != nil) {
-        imageURLString = [imageURLString substringToIndex:imageURLString.length - (query.length + 1)];
-    }
+    NSString *const imageURLString = [imageURL _encodedURIString];
 
     // Encrypt URL based declared encryption scheme.
     NSString *suffix = nil;
@@ -315,16 +311,12 @@ static NSString *const TUIsThumborizedURLKey = @"TUIsThumborizedURL";
 
         case TUEncryptionModeHMACSHA1:
         default: {
-            // It is important not to generate the URL by using stringByAppendingPathComponent because the trimmedString is not
-            // a filesystem path component. As such, http://lol gets turned into http:/lol by the API which 
-            // Thumbor will then reject causing all images in our app which use Thumbor to stop loading :)
-            NSString *trimmedString = [imageURLString stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"/"]];
             NSString *optionsString = options.URLOptionsPath;
             
             if (optionsString.length) {
-                suffix = [NSString stringWithFormat:@"%@/%@", optionsString, trimmedString];
+                suffix = [NSString stringWithFormat:@"%@/%@", optionsString, imageURLString];
             } else {
-                suffix = trimmedString;
+                suffix = imageURLString;
             }
             
             result = TUCreateEncryptedHMACSHA1Data(suffix, securityKey);
@@ -377,6 +369,18 @@ static NSString *const TUIsThumborizedURLKey = @"TUIsThumborizedURL";
     const NSNumber *isThumborizedURL = objc_getAssociatedObject(self, (__bridge void *)TUIsThumborizedURLKey);
 
     return isThumborizedURL.boolValue;
+}
+
+#pragma mark - Private Methods
+
+- (nullable NSString *)_encodedURIString;
+{
+    NSMutableCharacterSet *const allowedCharacters = [NSMutableCharacterSet alphanumericCharacterSet];
+
+    NSString *const unreservedCharacters = @"-._";
+    [allowedCharacters addCharactersInString:unreservedCharacters];
+
+    return [self.absoluteString stringByAddingPercentEncodingWithAllowedCharacters:allowedCharacters];
 }
 
 @end
