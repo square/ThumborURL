@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name         = 'ThumborURL'
-  s.version      = '0.0.4'
+  s.version      = '0.0.5'
   s.summary      = 'A library to generate encrypted URLs for Thumbor in your iOS app.'
   s.homepage     = 'https://github.com/square/ThumborURL'
   s.license      = 'Apache License, Version 2.0'
