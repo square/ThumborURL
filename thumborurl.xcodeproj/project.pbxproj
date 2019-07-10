@@ -158,7 +158,6 @@
 				F6EC748B153CB63C00AF55B4 /* Sources */,
 				F6EC748C153CB63C00AF55B4 /* Frameworks */,
 				F6EC748D153CB63C00AF55B4 /* Resources */,
-				F6EC748E153CB63C00AF55B4 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -206,22 +205,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
-
-/* Begin PBXShellScriptBuildPhase section */
-		F6EC748E153CB63C00AF55B4 /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "# Run the unit tests in this test bundle.\n\"${SYSTEM_DEVELOPER_DIR}/Tools/RunUnitTests\"\n";
-		};
-/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		F69614F1153C933E00AC1F5C /* Sources */ = {

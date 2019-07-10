@@ -31,7 +31,7 @@
     opts.encryption = TUEncryptionModeAES128;
     
     NSURL *u = [NSURL TU_secureURLWithOptions:opts imageURL:imageURL baseURL:baseURL securityKey:key];
-    NSString *expectedURL = @"/qcQJp6JpxvDT799fxzjPYxt9A0ooZSeV_NOo-nC0-GN5kvKkWcTfpqwLE5PgFouD/http://twitter.com/foo.png";
+    NSString *expectedURL = @"/fc_GrmvCFNnByKJG8XmdZh-ioMJKM5JAaGJX8mxH9JvH2KeTq3JOeC1is_b4lgAE/http%3A//twitter.com/foo.png";
     
     XCTAssertEqualObjects(expectedURL, u.relativeString, @"Should work");
 }
@@ -51,8 +51,8 @@
     opts.encryption = TUEncryptionModeAES128;
     
     NSURL *u = [NSURL TU_secureURLWithOptions:opts imageURL:imageURL baseURL:baseURL securityKey:key];
-    NSString *expectedURL = @"/VN-DQqsh6mSk4bb6biPlIj-IHwbA2IGyC7bPtNuPS4RvyMFh4I76UuuV6dNIjG9fV6FDVsTGF5sD23qD7sMwEg==/http://twitter.com/foo.png";
-    
+    NSString *expectedURL = @"/VN-DQqsh6mSk4bb6biPlIgvRjXnaBQfUDEDsKLINf9GDhOuTv8FegBLJ2fAuuJDUY-8X7yCFwMTYJVT22XlWKQ==/http%3A//twitter.com/foo.png";
+
     XCTAssertEqualObjects(expectedURL, u.relativeString, @"Should be equal to command line generated version");
 }
 
@@ -72,7 +72,7 @@
     opts.encryption = TUEncryptionModeAES128;
     
     NSURL *u = [NSURL TU_secureURLWithOptions:opts imageURL:imageURL baseURL:baseURL securityKey:key];
-    NSString *expectedURL = @"/VN-DQqsh6mSk4bb6biPlIj-IHwbA2IGyC7bPtNuPS4RvyMFh4I76UuuV6dNIjG9fV6FDVsTGF5sD23qD7sMwEg==/http://twitter.com/foo.png";
+    NSString *expectedURL = @"/VN-DQqsh6mSk4bb6biPlIgvRjXnaBQfUDEDsKLINf9GDhOuTv8FegBLJ2fAuuJDUY-8X7yCFwMTYJVT22XlWKQ==/http%3A//twitter.com/foo.png";
     
     XCTAssertEqualObjects(expectedURL, u.relativeString, @"Should be equal to command line generated version");
 }
@@ -99,7 +99,7 @@
     opts.vflip = NO;
     
     NSURL *u = [NSURL TU_secureURLWithOptions:newOpts imageURL:imageURL baseURL:baseURL securityKey:key];
-    NSString *expectedURL = @"/VN-DQqsh6mSk4bb6biPlIj-IHwbA2IGyC7bPtNuPS4RvyMFh4I76UuuV6dNIjG9fV6FDVsTGF5sD23qD7sMwEg==/http://twitter.com/foo.png";
+    NSString *expectedURL = @"/VN-DQqsh6mSk4bb6biPlIgvRjXnaBQfUDEDsKLINf9GDhOuTv8FegBLJ2fAuuJDUY-8X7yCFwMTYJVT22XlWKQ==/http%3A//twitter.com/foo.png";
     
     XCTAssertEqualObjects(expectedURL, u.relativeString, @"Should be equal to command line generated version");
 }
@@ -118,7 +118,7 @@
     opts.encryption = TUEncryptionModeAES128;
 
     NSURL *u = [NSURL TU_secureURLWithOptions:opts imageURL:imageURL baseURL:baseURL securityKey:key];
-    NSString *expectedURL = @"/ntizt-ZKGa7YNJLoTH7ie6wGXkyJxdzrcqOrtGvhyMQI12qTMRWYGqAki7QTt6miJKiCzgSScrlxGoN_U7tbp_3TNgOmlJUfeoXtwnxQ26RxMT6HzFjuLShitTZ4u015/http://twitter.com/foo.png";
+    NSString *expectedURL = @"/ntizt-ZKGa7YNJLoTH7ie6wGXkyJxdzrcqOrtGvhyMQI12qTMRWYGqAki7QTt6mi3A-iGEEhSaeCCalXhun6gO_N8IDt5gCt_E17K0tBd3mdx5EFnjJsqEsTvuOXzjLH/http%3A//twitter.com/foo.png";
     
     XCTAssertEqualObjects(expectedURL, u.relativeString, @"Should be equal to command line generated version");    
 }
@@ -213,5 +213,16 @@
     XCTAssertEqualObjects(expectedURL, u.relativeString, @"Should be equal to command line generated version");
 }
 
+- (void)testQueryIsIncludedInURL;
+{
+    NSURL *const imageURL = [NSURL URLWithString:@"http://twitter.com/foo.png?optionA=1&optionB=2"];
+    NSURL *const baseURL = [NSURL URLWithString:@"http://images.example.com"];
+    NSString *const key = @"omg152";
+    
+    NSURL *const thumborImageURL = [NSURL TU_secureURLWithOptions:[TUOptions new] imageURL:imageURL baseURL:baseURL securityKey:key];
+    NSURL *const expectedURL = [NSURL URLWithString:@"http://images.example.com/HOWsZqvJmMVNoOZwD8JmxSBBMfE=/http%3A//twitter.com/foo.png%3FoptionA%3D1%26optionB%3D2"];
+    
+    XCTAssertEqualObjects(expectedURL.absoluteString, thumborImageURL.absoluteString, @"Should be equal and contain query items");
+}
 
 @end
