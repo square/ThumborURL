@@ -83,7 +83,7 @@ typedef NS_ENUM(NSUInteger, TUEncryptionMode) {
 @property (nonatomic, assign) BOOL vflip;
 @property (nonatomic, assign) BOOL hflip;
 
-@property (nonatomic, copy) NSArray *filters;
+//@property (nonatomic, copy) NSArray *filters;
 
 @property (nonatomic, assign) CGFloat scale;
 
@@ -97,8 +97,8 @@ typedef NS_ENUM(NSUInteger, TUEncryptionMode) {
 @property (nonatomic, copy) NSString *name;
 @property (nonatomic, copy) NSArray *arguments;
 
-+ (id)filterWithName:(NSString *)name argumentsArray:(NSArray *)arguments;
-+ (id)filterWithName:(NSString *)name arguments:(id)firstArg, ... NS_REQUIRES_NIL_TERMINATION;
+//+ (id)filterWithName:(NSString *)name argumentsArray:(NSArray *)arguments;
+//+ (id)filterWithName:(NSString *)name arguments:(id)firstArg, ... NS_REQUIRES_NIL_TERMINATION;
 
 @end
 

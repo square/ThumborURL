@@ -96,27 +96,29 @@ static inline NSData *TUCreateEncryptedHMACSHA1Data(NSString *imageURLString, NS
 
 @implementation TUFilter
 
-+ (id)filterWithName:(NSString *)name argumentsArray:(NSArray *)arguments;
-{
-    TUFilter *filter = [[[self class] alloc] init];
-    filter.arguments = arguments;
-    filter.name = name;
-    return filter;
-}
-
-+ (id)filterWithName:(NSString *)name arguments:(id)firstArg, ...;
-{
-    NSMutableArray *argsAry = [NSMutableArray array];
-    
-    va_list args;
-    va_start(args, firstArg);
-    for (id arg = firstArg; arg != nil; arg = va_arg(args, id)) {
-        [argsAry addObject:arg];
-    }
-    va_end(args);
-    
-    return [self filterWithName:name argumentsArray:argsAry];
-}
+//// TODO: what does this translate to for swift?
+//// TODO: can I take this API out?
+//+ (id)filterWithName:(NSString *)name argumentsArray:(NSArray *)arguments;
+//{
+//    TUFilter *filter = [[[self class] alloc] init];
+//    filter.arguments = arguments;
+//    filter.name = name;
+//    return filter;
+//}
+//
+//+ (id)filterWithName:(NSString *)name arguments:(id)firstArg, ...;
+//{
+//    NSMutableArray *argsAry = [NSMutableArray array];
+//
+//    va_list args;
+//    va_start(args, firstArg);
+//    for (id arg = firstArg; arg != nil; arg = va_arg(args, id)) {
+//        [argsAry addObject:arg];
+//    }
+//    va_end(args);
+//
+//    return [self filterWithName:name argumentsArray:argsAry];
+//}
 
 
 @end
@@ -152,8 +154,8 @@ static inline NSData *TUCreateEncryptedHMACSHA1Data(NSString *imageURLString, NS
             @"crop", 
             @"fitIn",
             @"valign",
-            @"halign", 
-            @"filters",
+            @"halign",
+//            @"filters",
             @"vflip",
             @"hflip",
             @"scale",
@@ -254,17 +256,17 @@ static inline NSData *TUCreateEncryptedHMACSHA1Data(NSString *imageURLString, NS
         [params addObject:@"smart"];
     }
 
-    if (_filters.count) {
-        NSMutableArray *filterStrings = [[NSMutableArray alloc] initWithCapacity:(_filters.count + 1)];
-        [filterStrings addObject:@"filters"];
-
-        for (TUFilter *filter in _filters) {
-            NSString *str = [[NSString alloc] initWithFormat:@"%@(%@)", filter.name, [filter.arguments componentsJoinedByString:@","]];
-            [filterStrings addObject:str];
-        }
-
-        [params addObject:[filterStrings componentsJoinedByString:@":"]];
-    }
+//    if (_filters.count) {
+//        NSMutableArray *filterStrings = [[NSMutableArray alloc] initWithCapacity:(_filters.count + 1)];
+//        [filterStrings addObject:@"filters"];
+//
+//        for (TUFilter *filter in _filters) {
+//            NSString *str = [[NSString alloc] initWithFormat:@"%@(%@)", filter.name, [filter.arguments componentsJoinedByString:@","]];
+//            [filterStrings addObject:str];
+//        }
+//
+//        [params addObject:[filterStrings componentsJoinedByString:@":"]];
+//    }
 
     return [params copy];
 }
