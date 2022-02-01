@@ -256,18 +256,6 @@ static inline NSData *TUCreateEncryptedHMACSHA1Data(NSString *imageURLString, NS
         [params addObject:@"smart"];
     }
 
-//    if (_filters.count) {
-//        NSMutableArray *filterStrings = [[NSMutableArray alloc] initWithCapacity:(_filters.count + 1)];
-//        [filterStrings addObject:@"filters"];
-//
-//        for (TUFilter *filter in _filters) {
-//            NSString *str = [[NSString alloc] initWithFormat:@"%@(%@)", filter.name, [filter.arguments componentsJoinedByString:@","]];
-//            [filterStrings addObject:str];
-//        }
-//
-//        [params addObject:[filterStrings componentsJoinedByString:@":"]];
-//    }
-
     return [params copy];
 }
 
