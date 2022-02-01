@@ -13,26 +13,12 @@
 #import <Foundation/Foundation.h>
 
 
-@class TUFilter;
 @class TUOptions;
 
 
 typedef NS_ENUM(NSUInteger, TUFitInMode) {
     TUFitInNone = 0,
     TUFitInNormal,
-//    TUFitInAdaptive
-};
-
-typedef NS_ENUM(NSUInteger, TUVerticalAlignment) {
-    TUVerticalAlignMiddle = 0,
-//    TUVerticalAlignTop,
-//    TUVerticalAlignBottom,
-};
-
-typedef NS_ENUM(NSUInteger, TUHorizontalAlignment) {
-    TUHorizontalAlignCenter = 0,
-//    TUHorizontalAlignLeft,
-//    TUHorizontalAlignRight,
 };
 
 typedef NS_ENUM(NSUInteger, TUEncryptionMode) {
@@ -70,20 +56,8 @@ typedef NS_ENUM(NSUInteger, TUEncryptionMode) {
 - (TUOptions *)optionsBySettingSize:(CGSize)newSize;
 
 @property (nonatomic, assign) CGSize targetSize;
-@property (nonatomic, assign) BOOL smart;
-@property (nonatomic, assign) BOOL trim;
-@property (nonatomic, assign) BOOL debug;
-@property (nonatomic, assign) BOOL meta;
-@property (nonatomic, assign) CGRect crop;
 
 @property (nonatomic, assign) TUFitInMode fitIn;
-@property (nonatomic, assign) TUVerticalAlignment valign;
-@property (nonatomic, assign) TUHorizontalAlignment halign;
-
-@property (nonatomic, assign) BOOL vflip;
-@property (nonatomic, assign) BOOL hflip;
-
-//@property (nonatomic, copy) NSArray *filters;
 
 @property (nonatomic, assign) CGFloat scale;
 
@@ -91,16 +65,6 @@ typedef NS_ENUM(NSUInteger, TUEncryptionMode) {
 
 @end
 
-
-@interface TUFilter : NSObject
-
-@property (nonatomic, copy) NSString *name;
-@property (nonatomic, copy) NSArray *arguments;
-
-//+ (id)filterWithName:(NSString *)name argumentsArray:(NSArray *)arguments;
-//+ (id)filterWithName:(NSString *)name arguments:(id)firstArg, ... NS_REQUIRES_NIL_TERMINATION;
-
-@end
 
 
 @interface NSURL (ThumborURL)

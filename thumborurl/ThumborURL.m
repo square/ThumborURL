@@ -94,35 +94,6 @@ static inline NSData *TUCreateEncryptedHMACSHA1Data(NSString *imageURLString, NS
 @end
 
 
-@implementation TUFilter
-
-//// TODO: what does this translate to for swift?
-//// TODO: can I take this API out?
-//+ (id)filterWithName:(NSString *)name argumentsArray:(NSArray *)arguments;
-//{
-//    TUFilter *filter = [[[self class] alloc] init];
-//    filter.arguments = arguments;
-//    filter.name = name;
-//    return filter;
-//}
-//
-//+ (id)filterWithName:(NSString *)name arguments:(id)firstArg, ...;
-//{
-//    NSMutableArray *argsAry = [NSMutableArray array];
-//
-//    va_list args;
-//    va_start(args, firstArg);
-//    for (id arg = firstArg; arg != nil; arg = va_arg(args, id)) {
-//        [argsAry addObject:arg];
-//    }
-//    va_end(args);
-//
-//    return [self filterWithName:name argumentsArray:argsAry];
-//}
-
-
-@end
-
 
 @implementation TUOptions
 
@@ -146,18 +117,8 @@ static inline NSData *TUCreateEncryptedHMACSHA1Data(NSString *imageURLString, NS
     
     dispatch_once(&onceToken, ^{
         keys = @[
-            @"trim",
             @"targetSize",
-            @"smart",
-            @"debug",
-            @"meta", 
-            @"crop", 
             @"fitIn",
-            @"valign",
-            @"halign",
-//            @"filters",
-            @"vflip",
-            @"hflip",
             @"scale",
             @"encryption"
         ];
@@ -178,28 +139,8 @@ static inline NSData *TUCreateEncryptedHMACSHA1Data(NSString *imageURLString, NS
 - (NSArray *)URLOptions;
 {
     NSMutableArray *params = [NSMutableArray array];
-    
-    if (_debug) {
-        [params addObject:@"debug"];
-    }
-
-    if (_meta) {
-        [params addObject:@"meta"];
-    }
-    
-    if (_trim) {
-        [params addObject:@"trim"];
-    }
-
-    if (!CGRectEqualToRect(_crop, CGRectZero)) {
-        [params addObject:TUFormattedStringFromRect(_crop)];
-    }
 
     switch (_fitIn) {
-//        case TUFitInAdaptive:
-//            [params addObject:@"adaptive-fit-in"];
-//            break;
-//
         case TUFitInNormal:
             [params addObject:@"fit-in"];
             break;
@@ -213,47 +154,8 @@ static inline NSData *TUCreateEncryptedHMACSHA1Data(NSString *imageURLString, NS
     size.width *= _scale;
     size.height *= _scale;
 
-    if (_hflip) {
-        size.width *= -1.0f;
-    }
-    if (_vflip) {
-        size.height *= -1.0f;
-    }
-
     if (!CGSizeEqualToSize(size, CGSizeZero)) {
         [params addObject:TUFormattedStringFromSize(size)];
-    }
-
-    switch (_halign) {
-//        case TUHorizontalAlignLeft:
-//            [params addObject:@"left"];
-//            break;
-//
-//        case TUHorizontalAlignRight:
-//            [params addObject:@"right"];
-//            break;
-//
-        case TUHorizontalAlignCenter:
-            // Do nothing.
-            break;
-    }
-
-    switch (_valign) {
-//        case TUVerticalAlignTop:
-//            [params addObject:@"top"];
-//            break;
-//
-//        case TUVerticalAlignBottom:
-//            [params addObject:@"bottom"];
-//            break;
-//
-        case TUVerticalAlignMiddle:
-            // Do nothing.
-            break;
-    }
-
-    if (_smart) {
-        [params addObject:@"smart"];
     }
 
     return [params copy];
