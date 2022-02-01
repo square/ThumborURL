@@ -194,14 +194,14 @@ static inline NSData *TUCreateEncryptedHMACSHA1Data(NSString *imageURLString, NS
     }
 
     switch (_fitIn) {
-        case TUFitInAdaptive:
-            [params addObject:@"adaptive-fit-in"];
-            break;
-            
-        case TUFitInNormal:
-            [params addObject:@"fit-in"];
-            break;
-            
+//        case TUFitInAdaptive:
+//            [params addObject:@"adaptive-fit-in"];
+//            break;
+//
+//        case TUFitInNormal:
+//            [params addObject:@"fit-in"];
+//            break;
+
         case TUFitInNone:
             // Do nothing.
             break;
@@ -223,28 +223,28 @@ static inline NSData *TUCreateEncryptedHMACSHA1Data(NSString *imageURLString, NS
     }
 
     switch (_halign) {
-        case TUHorizontalAlignLeft:
-            [params addObject:@"left"];
-            break;
-            
-        case TUHorizontalAlignRight:
-            [params addObject:@"right"];
-            break;
-            
+//        case TUHorizontalAlignLeft:
+//            [params addObject:@"left"];
+//            break;
+//
+//        case TUHorizontalAlignRight:
+//            [params addObject:@"right"];
+//            break;
+//
         case TUHorizontalAlignCenter:
             // Do nothing.
             break;
     }
 
     switch (_valign) {
-        case TUVerticalAlignTop:
-            [params addObject:@"top"];
-            break;
-            
-        case TUVerticalAlignBottom:
-            [params addObject:@"bottom"];
-            break;
-            
+//        case TUVerticalAlignTop:
+//            [params addObject:@"top"];
+//            break;
+//
+//        case TUVerticalAlignBottom:
+//            [params addObject:@"bottom"];
+//            break;
+//
         case TUVerticalAlignMiddle:
             // Do nothing.
             break;

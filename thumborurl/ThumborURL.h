@@ -19,20 +19,20 @@
 
 typedef NS_ENUM(NSUInteger, TUFitInMode) {
     TUFitInNone = 0,
-    TUFitInNormal,
-    TUFitInAdaptive
+//    TUFitInNormal,
+//    TUFitInAdaptive
 };
 
 typedef NS_ENUM(NSUInteger, TUVerticalAlignment) {
     TUVerticalAlignMiddle = 0,
-    TUVerticalAlignTop,
-    TUVerticalAlignBottom,
+//    TUVerticalAlignTop,
+//    TUVerticalAlignBottom,
 };
 
 typedef NS_ENUM(NSUInteger, TUHorizontalAlignment) {
     TUHorizontalAlignCenter = 0,
-    TUHorizontalAlignLeft,
-    TUHorizontalAlignRight,
+//    TUHorizontalAlignLeft,
+//    TUHorizontalAlignRight,
 };
 
 typedef NS_ENUM(NSUInteger, TUEncryptionMode) {
@@ -77,7 +77,6 @@ typedef NS_ENUM(NSUInteger, TUEncryptionMode) {
 @property (nonatomic, assign) CGRect crop;
 
 @property (nonatomic, assign) TUFitInMode fitIn;
-
 @property (nonatomic, assign) TUVerticalAlignment valign;
 @property (nonatomic, assign) TUHorizontalAlignment halign;
 
